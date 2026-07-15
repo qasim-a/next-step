@@ -3,6 +3,29 @@
 No `NEEDS CLARIFICATION` markers remained in the Technical Context, so this research documents
 the rationale behind the concrete choices made there rather than resolving open unknowns.
 
+## Addendum (discovered during implementation): a `ModelContext` does not retain its `ModelContainer`
+
+- **Finding**: A helper like `func makeRepository() throws -> SwiftDataContactRepository { let
+  container = try ModelContainer(...); return SwiftDataContactRepository(modelContext:
+  container.mainContext) }` crashes the moment the returned repository is used. `ModelContext`
+  does not hold a strong reference back to the `ModelContainer` that created it, so once
+  `makeRepository()` returns, ARC deallocates the local `container` — the context then points at
+  a torn-down store, and the first `insert`/`fetch` call traps with `EXC_BREAKPOINT` inside
+  `SwiftData.framework`.
+- **Red herring ruled out**: This was initially misdiagnosed as a Swift Testing/SwiftData
+  incompatibility (Swift Testing `@Test` crashed, a same-scope `XCTestCase` prototype didn't) —
+  but the XCTest prototype only "worked" because it happened to keep everything, including the
+  container, in one function scope. Once `SwiftDataContactRepositoryTests` was restructured with
+  the same local-helper pattern under XCTest, it crashed identically, isolating the real cause to
+  container lifetime, not the test framework.
+- **Fix**: `SwiftDataContactRepositoryTests` holds `container` as a stored property (set in
+  `init()`), not returned from a local helper — keeping it alive for the whole test. In
+  production, `NextStepApp.modelContainer` is already a stored property held for the app's
+  lifetime, so this bug never manifested there.
+- **Takeaway for later specs**: Anywhere a `ModelContainer` is created for test setup, keep it
+  as a retained property (test-suite instance property or `XCTestCase` `setUp`/instance var), not
+  a local inside a factory function.
+
 ## SwiftData vs. Core Data
 
 - **Decision**: SwiftData.
