@@ -63,10 +63,10 @@ final class ContactManagementFlowUITests: XCTestCase {
 
         app.buttons["contactForm.cancelButton"].tap()
 
-        XCTAssertTrue(app.otherElements["contactList.emptyState"].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.descendants(matching: .any)["contactList.emptyState"].waitForExistence(timeout: 2))
     }
 
     func test_launchingWithNoContacts_showsEmptyStateGuidance() {
-        XCTAssertTrue(app.otherElements["contactList.emptyState"].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.descendants(matching: .any)["contactList.emptyState"].waitForExistence(timeout: 2))
     }
 }
