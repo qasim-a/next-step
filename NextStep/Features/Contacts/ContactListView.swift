@@ -4,6 +4,8 @@ struct ContactListView: View {
     @Environment(\.contactRepository) private var contactRepository
     @State private var viewModel: ContactViewModel?
     @State private var isPresentingContactForm = false
+    @State private var searchText = ""
+    @State private var selectedCategory: RelationshipCategory?
 
     var body: some View {
         NavigationStack {
@@ -15,6 +17,7 @@ struct ContactListView: View {
                 }
             }
             .navigationTitle("Contacts")
+            .searchable(text: $searchText, prompt: "Search by name or company")
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Button {
@@ -23,6 +26,9 @@ struct ContactListView: View {
                         Label("Add Contact", systemImage: "plus")
                     }
                     .accessibilityIdentifier("contactList.addButton")
+                }
+                ToolbarItem(placement: .secondaryAction) {
+                    categoryFilterMenu
                 }
             }
             .sheet(isPresented: $isPresentingContactForm) {
@@ -38,6 +44,26 @@ struct ContactListView: View {
         }
     }
 
+    private var categoryFilterMenu: some View {
+        Menu {
+            Button("All Categories") {
+                selectedCategory = nil
+            }
+            Divider()
+            ForEach(RelationshipCategory.allCases) { category in
+                Button(category.displayName) {
+                    selectedCategory = category
+                }
+            }
+        } label: {
+            Label(
+                selectedCategory?.displayName ?? "Filter",
+                systemImage: selectedCategory == nil ? "line.3.horizontal.decrease.circle" : "line.3.horizontal.decrease.circle.fill"
+            )
+        }
+        .accessibilityIdentifier("contactList.categoryFilterMenu")
+    }
+
     @ViewBuilder
     private func content(for viewModel: ContactViewModel) -> some View {
         if viewModel.contacts.isEmpty {
@@ -48,10 +74,25 @@ struct ContactListView: View {
             )
             .accessibilityIdentifier("contactList.emptyState")
         } else {
-            List(viewModel.contacts) { contact in
-                ContactRow(contact: contact)
+            let filteredContacts = ContactFiltering.filter(
+                viewModel.contacts,
+                searchText: searchText,
+                category: selectedCategory
+            )
+
+            if filteredContacts.isEmpty {
+                ContentUnavailableView(
+                    "No Matching Contacts",
+                    systemImage: "magnifyingglass",
+                    description: Text("Try a different search or clear the category filter.")
+                )
+                .accessibilityIdentifier("contactList.noResultsState")
+            } else {
+                List(filteredContacts) { contact in
+                    ContactRow(contact: contact)
+                }
+                .accessibilityIdentifier("contactList.list")
             }
-            .accessibilityIdentifier("contactList.list")
         }
     }
 }
