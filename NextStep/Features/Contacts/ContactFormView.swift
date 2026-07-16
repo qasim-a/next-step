@@ -49,6 +49,7 @@ struct ContactFormView: View {
                     }
                     .accessibilityIdentifier("contactForm.categoryPicker")
                     Stepper("Strength: \(relationshipStrength)", value: $relationshipStrength, in: 1...5)
+                        .accessibilityHint("Adjusts from 1 to 5")
                     TextField("How we met", text: $howWeMet)
                 }
 
@@ -56,6 +57,7 @@ struct ContactFormView: View {
                     TextEditor(text: $notes)
                         .frame(minHeight: 100)
                         .accessibilityIdentifier("contactForm.notesField")
+                        .accessibilityLabel("Notes")
                 }
 
                 if showsNameRequiredError {

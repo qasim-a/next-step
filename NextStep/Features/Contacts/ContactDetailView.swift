@@ -50,6 +50,7 @@ struct ContactDetailView: View {
                     isPresentingDeleteConfirmation = true
                 }
                 .accessibilityIdentifier("contactDetail.deleteButton")
+                .accessibilityHint("Requires confirmation")
             }
         }
         .navigationTitle(contact.name)

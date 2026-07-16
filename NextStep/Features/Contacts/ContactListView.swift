@@ -67,6 +67,7 @@ struct ContactListView: View {
             )
         }
         .accessibilityIdentifier("contactList.categoryFilterMenu")
+        .accessibilityHint("Filters contacts by relationship category")
     }
 
     @ViewBuilder
