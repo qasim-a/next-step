@@ -62,4 +62,37 @@ struct SwiftDataContactRepositoryTests {
         #expect(try repository.fetchAllCompanies().count == 1)
         #expect(second.name == "UBS")
     }
+
+    @Test
+    func updatingAnAlreadySavedContactPersistsChanges() throws {
+        let contact = NetworkingContact(name: "Priya Patel")
+        try repository.save(contact)
+
+        contact.jobTitle = "Staff Engineer"
+        try repository.save(contact)
+
+        let fetched = try repository.fetch(id: contact.id)
+        #expect(fetched?.jobTitle == "Staff Engineer")
+        #expect(try repository.fetchAll().count == 1)
+    }
+
+    @Test
+    func deletingAContactRemovesItFromFetchAll() throws {
+        let contact = NetworkingContact(name: "Diego Ramirez")
+        try repository.save(contact)
+
+        try repository.delete(contact)
+
+        #expect(try repository.fetchAll().isEmpty)
+    }
+
+    @Test
+    func deletingAContactRemovesItFromFetchById() throws {
+        let contact = NetworkingContact(name: "Amara Okafor")
+        try repository.save(contact)
+
+        try repository.delete(contact)
+
+        #expect(try repository.fetch(id: contact.id) == nil)
+    }
 }
