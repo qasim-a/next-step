@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		072346FBA83A67E7376F0E93 /* ContactFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B021449D063545802AB0D53 /* ContactFormView.swift */; };
 		177A4F708D9E5D473C5369D7 /* SwiftDataContactRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED6E5F16E3E04F651715ECE /* SwiftDataContactRepositoryTests.swift */; };
+		1BE7E4F6AE4C82020418E373 /* Interaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD7D22D079B44F19203DA8A /* Interaction.swift */; };
 		46F3B9A093C0E798EB731530 /* NetworkingContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC8FC4B96255EACDED0536A /* NetworkingContact.swift */; };
 		4B69099E0239BC0003AABB9F /* ContactFiltering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A8D0508FA112B35BC461927 /* ContactFiltering.swift */; };
 		6A95A8882B512264C5054EF9 /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FF808359D8FDC6088E919A /* Company.swift */; };
@@ -20,6 +21,7 @@
 		8F470475C0EADD0CBAA3E130 /* ContactListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF802D3104D4074B91B74891 /* ContactListView.swift */; };
 		A376AC6741E52E65EFB56CC3 /* ContactFilteringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26DACD2609E2815D3F3D6FED /* ContactFilteringTests.swift */; };
 		DABA3CD1EEC6B675548C673E /* ContactManagementFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0405A783C48FAA4C7DD4AA /* ContactManagementFlowUITests.swift */; };
+		DBCA1F4D939624A40E8CEA18 /* InteractionTimeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = A011F982D1B9C6A1CA7AC48C /* InteractionTimeline.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,7 +53,9 @@
 		65C5152CBF96984F19045485 /* NextStepApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextStepApp.swift; sourceTree = "<group>"; };
 		8ED6E5F16E3E04F651715ECE /* SwiftDataContactRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataContactRepositoryTests.swift; sourceTree = "<group>"; };
 		923C69C1D052836C88B9E2A1 /* NextStepTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = NextStepTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A011F982D1B9C6A1CA7AC48C /* InteractionTimeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionTimeline.swift; sourceTree = "<group>"; };
 		A7FF808359D8FDC6088E919A /* Company.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Company.swift; sourceTree = "<group>"; };
+		ADD7D22D079B44F19203DA8A /* Interaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interaction.swift; sourceTree = "<group>"; };
 		B2F916C0DC6EA02CF5C8015B /* NextStepUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = NextStepUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF802D3104D4074B91B74891 /* ContactListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactListView.swift; sourceTree = "<group>"; };
 		DEC8FC4B96255EACDED0536A /* NetworkingContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingContact.swift; sourceTree = "<group>"; };
@@ -59,10 +63,19 @@
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		0FB5A0FD8BA195AB82621744 /* Interactions */ = {
+			isa = PBXGroup;
+			children = (
+				A011F982D1B9C6A1CA7AC48C /* InteractionTimeline.swift */,
+			);
+			path = Interactions;
+			sourceTree = "<group>";
+		};
 		19B62E124C8BFDB1CFA073DD /* Features */ = {
 			isa = PBXGroup;
 			children = (
 				D42992005337233CFCFF84F0 /* Contacts */,
+				0FB5A0FD8BA195AB82621744 /* Interactions */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -90,6 +103,7 @@
 			isa = PBXGroup;
 			children = (
 				A7FF808359D8FDC6088E919A /* Company.swift */,
+				ADD7D22D079B44F19203DA8A /* Interaction.swift */,
 				DEC8FC4B96255EACDED0536A /* NetworkingContact.swift */,
 			);
 			path = Models;
@@ -281,6 +295,8 @@
 				8F470475C0EADD0CBAA3E130 /* ContactListView.swift in Sources */,
 				6CCF528F4AA2F93B3957601F /* ContactRepository.swift in Sources */,
 				748D499B9B4B62D60A5987B4 /* ContactViewModel.swift in Sources */,
+				1BE7E4F6AE4C82020418E373 /* Interaction.swift in Sources */,
+				DBCA1F4D939624A40E8CEA18 /* InteractionTimeline.swift in Sources */,
 				46F3B9A093C0E798EB731530 /* NetworkingContact.swift in Sources */,
 				70ED4844A09E4CB2BECE617C /* NextStepApp.swift in Sources */,
 				7DC99B7B614DFD8C6CE71CFB /* SwiftDataContactRepository.swift in Sources */,

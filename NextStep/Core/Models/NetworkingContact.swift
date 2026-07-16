@@ -35,6 +35,9 @@ final class NetworkingContact {
     var lastInteractionDate: Date?
     var createdAt: Date
 
+    @Relationship(deleteRule: .cascade, inverse: \Interaction.contact)
+    var interactions: [Interaction] = []
+
     init(
         id: UUID = UUID(),
         name: String,

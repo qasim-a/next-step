@@ -50,4 +50,36 @@ final class SwiftDataContactRepository: ContactRepository {
         try modelContext.save()
         return company
     }
+
+    func fetchInteractions(for contact: NetworkingContact) throws -> [Interaction] {
+        let contactID = contact.id
+        let descriptor = FetchDescriptor<Interaction>(
+            predicate: #Predicate { $0.contact?.id == contactID }
+        )
+        return try modelContext.fetch(descriptor)
+    }
+
+    func saveInteraction(_ interaction: Interaction, for contact: NetworkingContact) throws {
+        if interaction.modelContext == nil {
+            interaction.contact = contact
+            modelContext.insert(interaction)
+        }
+        try modelContext.save()
+        try recomputeLastInteractionDate(for: contact)
+    }
+
+    func deleteInteraction(_ interaction: Interaction) throws {
+        let contact = interaction.contact
+        modelContext.delete(interaction)
+        try modelContext.save()
+        if let contact {
+            try recomputeLastInteractionDate(for: contact)
+        }
+    }
+
+    private func recomputeLastInteractionDate(for contact: NetworkingContact) throws {
+        let interactions = try fetchInteractions(for: contact)
+        contact.lastInteractionDate = interactions.map(\.date).max()
+        try modelContext.save()
+    }
 }

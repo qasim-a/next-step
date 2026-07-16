@@ -9,6 +9,10 @@ protocol ContactRepository {
 
     func fetchAllCompanies() throws -> [Company]
     func findOrCreateCompany(named name: String) throws -> Company
+
+    func fetchInteractions(for contact: NetworkingContact) throws -> [Interaction]
+    func saveInteraction(_ interaction: Interaction, for contact: NetworkingContact) throws
+    func deleteInteraction(_ interaction: Interaction) throws
 }
 
 private struct ContactRepositoryKey: EnvironmentKey {
