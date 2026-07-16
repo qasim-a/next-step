@@ -180,4 +180,111 @@ final class ContactManagementFlowUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Sarah Chen"].waitForExistence(timeout: 2))
         XCTAssertTrue(app.staticTexts["Michael Osei"].exists)
     }
+
+    // MARK: - User Story 3: Review and update a contact over time
+
+    private func clearAndType(_ field: XCUIElement, _ text: String) {
+        field.tap()
+        if let existing = field.value as? String, !existing.isEmpty {
+            let deleteString = String(repeating: XCUIKeyboardKey.delete.rawValue, count: existing.count)
+            field.typeText(deleteString)
+        }
+        field.typeText(text)
+    }
+
+    func test_openingContactDetail_showsStoredFields() {
+        createContact(name: "Sarah Chen", company: "UBS", category: "Recruiter")
+
+        app.staticTexts["Sarah Chen"].tap()
+
+        XCTAssertTrue(app.staticTexts["contactDetail.name"].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.staticTexts["contactDetail.name"].label.contains("Sarah Chen"))
+        XCTAssertTrue(app.staticTexts["contactDetail.company"].label.contains("UBS"))
+    }
+
+    func test_editingContact_updatesDetailAndList() {
+        createContact(name: "Michael Osei", company: "UBS")
+
+        app.staticTexts["Michael Osei"].tap()
+        XCTAssertTrue(app.buttons["contactDetail.editButton"].waitForExistence(timeout: 2))
+        app.buttons["contactDetail.editButton"].tap()
+
+        let companyField = app.textFields["contactForm.companyField"]
+        XCTAssertTrue(companyField.waitForExistence(timeout: 2))
+        clearAndType(companyField, "Google")
+
+        app.buttons["contactForm.saveButton"].tap()
+
+        XCTAssertTrue(app.staticTexts["contactDetail.company"].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.staticTexts["contactDetail.company"].label.contains("Google"))
+
+        app.buttons["BackButton"].tap()
+        XCTAssertTrue(app.staticTexts["Google"].waitForExistence(timeout: 2))
+    }
+
+    func test_cancelingEdit_leavesContactUnchanged() {
+        createContact(name: "Sarah Chen", company: "UBS")
+
+        app.staticTexts["Sarah Chen"].tap()
+        app.buttons["contactDetail.editButton"].tap()
+
+        let companyField = app.textFields["contactForm.companyField"]
+        XCTAssertTrue(companyField.waitForExistence(timeout: 2))
+        clearAndType(companyField, "Discarded Company")
+
+        app.buttons["contactForm.cancelButton"].tap()
+
+        XCTAssertTrue(app.staticTexts["contactDetail.company"].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.staticTexts["contactDetail.company"].label.contains("UBS"))
+    }
+
+    func test_deletingContact_withConfirmation_removesFromList() {
+        createContact(name: "Sarah Chen")
+
+        app.staticTexts["Sarah Chen"].tap()
+        XCTAssertTrue(app.buttons["contactDetail.deleteButton"].waitForExistence(timeout: 2))
+        app.buttons["contactDetail.deleteButton"].tap()
+
+        XCTAssertTrue(app.buttons["contactDetail.confirmDeleteButton"].waitForExistence(timeout: 2))
+        app.buttons["contactDetail.confirmDeleteButton"].firstMatch.tap()
+
+        XCTAssertTrue(app.descendants(matching: .any)["contactList.emptyState"].waitForExistence(timeout: 2))
+        XCTAssertFalse(app.staticTexts["Sarah Chen"].exists)
+    }
+
+    func test_relaunchingApp_persistsContactAcrossLaunch() {
+        // This test specifically verifies persistence across a process relaunch, which an
+        // in-memory store can't demonstrate — it uses the real on-disk store (no
+        // -UITestResetState) and cleans up after itself so repeated runs don't accumulate data.
+        app.terminate()
+        app = XCUIApplication()
+        app.launch()
+
+        let contactName = "Relaunch Persistence Test Contact"
+
+        // Self-heal: remove any leftover contact from a previously interrupted run of this
+        // specific test, since it's the one test that touches the real on-disk store.
+        while app.staticTexts[contactName].firstMatch.exists {
+            app.staticTexts[contactName].firstMatch.tap()
+            app.buttons["contactDetail.deleteButton"].tap()
+            app.buttons["contactDetail.confirmDeleteButton"].firstMatch.tap()
+        }
+
+        app.buttons["contactList.addButton"].tap()
+        let nameField = app.textFields["contactForm.nameField"]
+        XCTAssertTrue(nameField.waitForExistence(timeout: 2))
+        nameField.tap()
+        nameField.typeText(contactName)
+        app.buttons["contactForm.saveButton"].tap()
+        XCTAssertTrue(app.staticTexts[contactName].waitForExistence(timeout: 2))
+
+        app.terminate()
+        app.launch()
+
+        XCTAssertTrue(app.staticTexts[contactName].waitForExistence(timeout: 2))
+
+        app.staticTexts[contactName].firstMatch.tap()
+        app.buttons["contactDetail.deleteButton"].tap()
+        app.buttons["contactDetail.confirmDeleteButton"].firstMatch.tap()
+    }
 }
