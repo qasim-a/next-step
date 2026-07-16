@@ -70,6 +70,18 @@ final class ContactViewModel {
         )
     }
 
+    @discardableResult
+    func deleteContact(_ contact: NetworkingContact) -> Bool {
+        do {
+            try repository.delete(contact)
+            loadContacts()
+            return true
+        } catch {
+            errorMessage = "Couldn't delete contact. Please try again."
+            return false
+        }
+    }
+
     private func applyAndSave(
         name: String,
         companyName: String,

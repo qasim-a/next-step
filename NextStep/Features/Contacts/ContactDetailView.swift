@@ -4,7 +4,9 @@ struct ContactDetailView: View {
     let contact: NetworkingContact
     var viewModel: ContactViewModel
 
+    @Environment(\.dismiss) private var dismiss
     @State private var isPresentingEditForm = false
+    @State private var isPresentingDeleteConfirmation = false
 
     var body: some View {
         List {
@@ -42,6 +44,13 @@ struct ContactDetailView: View {
 
             // Interaction history and opportunities sections are added in later specifications;
             // this List-of-Sections structure lets them slot in without reworking the fields above.
+
+            Section {
+                Button("Delete Contact", role: .destructive) {
+                    isPresentingDeleteConfirmation = true
+                }
+                .accessibilityIdentifier("contactDetail.deleteButton")
+            }
         }
         .navigationTitle(contact.name)
         .navigationBarTitleDisplayMode(.inline)
@@ -56,6 +65,20 @@ struct ContactDetailView: View {
         }
         .sheet(isPresented: $isPresentingEditForm) {
             ContactFormView(viewModel: viewModel, existingContact: contact)
+        }
+        .confirmationDialog(
+            "Delete \(contact.name)?",
+            isPresented: $isPresentingDeleteConfirmation,
+            titleVisibility: .visible
+        ) {
+            Button("Delete", role: .destructive) {
+                viewModel.deleteContact(contact)
+                dismiss()
+            }
+            .accessibilityIdentifier("contactDetail.confirmDeleteButton")
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("This can't be undone.")
         }
     }
 }
