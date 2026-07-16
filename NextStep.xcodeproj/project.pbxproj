@@ -13,6 +13,7 @@
 		2C0130551CFD8B83E8096F18 /* InteractionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099DA5E39BCEE865D4858022 /* InteractionRow.swift */; };
 		3AE057702D5389B6964F4A43 /* InteractionFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10779AC8F64A4D9BC1E697F8 /* InteractionFormView.swift */; };
 		46F3B9A093C0E798EB731530 /* NetworkingContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC8FC4B96255EACDED0536A /* NetworkingContact.swift */; };
+		481A14E5EB80970314E2843D /* InteractionTimelineOrderingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17FC0974368EE8177BD01CE6 /* InteractionTimelineOrderingTests.swift */; };
 		4B69099E0239BC0003AABB9F /* ContactFiltering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A8D0508FA112B35BC461927 /* ContactFiltering.swift */; };
 		4E44EC7CCC011F97BBC5674E /* InteractionRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2258756FFABC7184E9D02BE /* InteractionRepositoryTests.swift */; };
 		6A95A8882B512264C5054EF9 /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FF808359D8FDC6088E919A /* Company.swift */; };
@@ -50,6 +51,7 @@
 		061B9D786DD8B1AAE701D6F1 /* NextStep.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = NextStep.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		099DA5E39BCEE865D4858022 /* InteractionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionRow.swift; sourceTree = "<group>"; };
 		10779AC8F64A4D9BC1E697F8 /* InteractionFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionFormView.swift; sourceTree = "<group>"; };
+		17FC0974368EE8177BD01CE6 /* InteractionTimelineOrderingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionTimelineOrderingTests.swift; sourceTree = "<group>"; };
 		21919843565BF9F403C3C847 /* ContactViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactViewModel.swift; sourceTree = "<group>"; };
 		26DACD2609E2815D3F3D6FED /* ContactFilteringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactFilteringTests.swift; sourceTree = "<group>"; };
 		2A0405A783C48FAA4C7DD4AA /* ContactManagementFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactManagementFlowUITests.swift; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 			children = (
 				26DACD2609E2815D3F3D6FED /* ContactFilteringTests.swift */,
 				C2258756FFABC7184E9D02BE /* InteractionRepositoryTests.swift */,
+				17FC0974368EE8177BD01CE6 /* InteractionTimelineOrderingTests.swift */,
 				8ED6E5F16E3E04F651715ECE /* SwiftDataContactRepositoryTests.swift */,
 			);
 			path = NextStepTests;
@@ -297,6 +300,7 @@
 			files = (
 				A376AC6741E52E65EFB56CC3 /* ContactFilteringTests.swift in Sources */,
 				4E44EC7CCC011F97BBC5674E /* InteractionRepositoryTests.swift in Sources */,
+				481A14E5EB80970314E2843D /* InteractionTimelineOrderingTests.swift in Sources */,
 				177A4F708D9E5D473C5369D7 /* SwiftDataContactRepositoryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

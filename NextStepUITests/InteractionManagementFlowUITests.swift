@@ -81,4 +81,42 @@ final class InteractionManagementFlowUITests: XCTestCase {
 
         XCTAssertTrue(app.descendants(matching: .any)["contactDetail.screen"].waitForExistence(timeout: 2))
     }
+
+    // MARK: - User Story 2: See a contact's interaction history at a glance
+
+    private func logInteraction(type: String? = nil) {
+        app.buttons["contactDetail.logInteractionButton"].tap()
+        XCTAssertTrue(app.buttons["interactionForm.typePicker"].waitForExistence(timeout: 2))
+        if let type {
+            app.buttons["interactionForm.typePicker"].tap()
+            app.buttons[type].tap()
+        }
+        app.buttons["interactionForm.saveButton"].tap()
+    }
+
+    func test_contactWithNoInteractions_showsTimelineEmptyState() {
+        createContactAndOpenDetail(name: "Sarah Chen")
+
+        XCTAssertTrue(app.staticTexts["contactDetail.timelineEmptyState"].waitForExistence(timeout: 2))
+    }
+
+    func test_loggingTwoInteractions_showsMostRecentlyLoggedFirst() {
+        createContactAndOpenDetail(name: "Michael Osei")
+
+        logInteraction(type: "Email")
+        XCTAssertTrue(app.staticTexts["Email, \(todayFormatted())"].waitForExistence(timeout: 2))
+
+        logInteraction(type: "Phone or Video Call")
+        let phoneRow = app.staticTexts["Phone or Video Call, \(todayFormatted())"]
+        let emailRow = app.staticTexts["Email, \(todayFormatted())"]
+        XCTAssertTrue(phoneRow.waitForExistence(timeout: 2))
+        XCTAssertTrue(emailRow.exists)
+
+        // Same date, so the more-recently-logged (Phone) interaction should sort above Email.
+        XCTAssertLessThan(phoneRow.frame.minY, emailRow.frame.minY)
+    }
+
+    private func todayFormatted() -> String {
+        Date.now.formatted(date: .abbreviated, time: .omitted)
+    }
 }
