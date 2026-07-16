@@ -10,6 +10,7 @@
 		072346FBA83A67E7376F0E93 /* ContactFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B021449D063545802AB0D53 /* ContactFormView.swift */; };
 		177A4F708D9E5D473C5369D7 /* SwiftDataContactRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED6E5F16E3E04F651715ECE /* SwiftDataContactRepositoryTests.swift */; };
 		1BE7E4F6AE4C82020418E373 /* Interaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD7D22D079B44F19203DA8A /* Interaction.swift */; };
+		2C0130551CFD8B83E8096F18 /* InteractionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099DA5E39BCEE865D4858022 /* InteractionRow.swift */; };
 		3AE057702D5389B6964F4A43 /* InteractionFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10779AC8F64A4D9BC1E697F8 /* InteractionFormView.swift */; };
 		46F3B9A093C0E798EB731530 /* NetworkingContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC8FC4B96255EACDED0536A /* NetworkingContact.swift */; };
 		4B69099E0239BC0003AABB9F /* ContactFiltering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A8D0508FA112B35BC461927 /* ContactFiltering.swift */; };
@@ -47,6 +48,7 @@
 
 /* Begin PBXFileReference section */
 		061B9D786DD8B1AAE701D6F1 /* NextStep.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = NextStep.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		099DA5E39BCEE865D4858022 /* InteractionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionRow.swift; sourceTree = "<group>"; };
 		10779AC8F64A4D9BC1E697F8 /* InteractionFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionFormView.swift; sourceTree = "<group>"; };
 		21919843565BF9F403C3C847 /* ContactViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactViewModel.swift; sourceTree = "<group>"; };
 		26DACD2609E2815D3F3D6FED /* ContactFilteringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactFilteringTests.swift; sourceTree = "<group>"; };
@@ -75,6 +77,7 @@
 			isa = PBXGroup;
 			children = (
 				10779AC8F64A4D9BC1E697F8 /* InteractionFormView.swift */,
+				099DA5E39BCEE865D4858022 /* InteractionRow.swift */,
 				A011F982D1B9C6A1CA7AC48C /* InteractionTimeline.swift */,
 				9C3E41B66E43AE07FD8DCE03 /* InteractionViewModel.swift */,
 			);
@@ -311,6 +314,7 @@
 				748D499B9B4B62D60A5987B4 /* ContactViewModel.swift in Sources */,
 				1BE7E4F6AE4C82020418E373 /* Interaction.swift in Sources */,
 				3AE057702D5389B6964F4A43 /* InteractionFormView.swift in Sources */,
+				2C0130551CFD8B83E8096F18 /* InteractionRow.swift in Sources */,
 				DBCA1F4D939624A40E8CEA18 /* InteractionTimeline.swift in Sources */,
 				FD627155B2F4120A699F570D /* InteractionViewModel.swift in Sources */,
 				46F3B9A093C0E798EB731530 /* NetworkingContact.swift in Sources */,

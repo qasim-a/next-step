@@ -55,6 +55,19 @@ struct ContactDetailView: View {
                 .accessibilityIdentifier("contactDetail.logInteractionButton")
             }
 
+            Section("Timeline") {
+                let sortedInteractions = InteractionTimeline.sorted(interactionViewModel?.interactions ?? [])
+                if sortedInteractions.isEmpty {
+                    Text("No interactions logged yet. Tap Log Interaction to add the first one.")
+                        .foregroundStyle(.secondary)
+                        .accessibilityIdentifier("contactDetail.timelineEmptyState")
+                } else {
+                    ForEach(sortedInteractions) { interaction in
+                        InteractionRow(interaction: interaction)
+                    }
+                }
+            }
+
             Section {
                 Button("Delete Contact", role: .destructive) {
                     isPresentingDeleteConfirmation = true
