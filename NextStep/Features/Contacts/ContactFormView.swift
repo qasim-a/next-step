@@ -4,16 +4,30 @@ struct ContactFormView: View {
     @Environment(\.dismiss) private var dismiss
 
     var viewModel: ContactViewModel
+    var existingContact: NetworkingContact?
 
-    @State private var name = ""
-    @State private var companyName = ""
-    @State private var jobTitle = ""
-    @State private var contactHandle = ""
-    @State private var howWeMet = ""
-    @State private var relationshipCategory: RelationshipCategory = .peer
-    @State private var relationshipStrength = 3
-    @State private var notes = ""
+    @State private var name: String
+    @State private var companyName: String
+    @State private var jobTitle: String
+    @State private var contactHandle: String
+    @State private var howWeMet: String
+    @State private var relationshipCategory: RelationshipCategory
+    @State private var relationshipStrength: Int
+    @State private var notes: String
     @State private var showsNameRequiredError = false
+
+    init(viewModel: ContactViewModel, existingContact: NetworkingContact? = nil) {
+        self.viewModel = viewModel
+        self.existingContact = existingContact
+        _name = State(initialValue: existingContact?.name ?? "")
+        _companyName = State(initialValue: existingContact?.company?.name ?? "")
+        _jobTitle = State(initialValue: existingContact?.jobTitle ?? "")
+        _contactHandle = State(initialValue: existingContact?.contactHandle ?? "")
+        _howWeMet = State(initialValue: existingContact?.howWeMet ?? "")
+        _relationshipCategory = State(initialValue: existingContact?.relationshipCategory ?? .peer)
+        _relationshipStrength = State(initialValue: existingContact?.relationshipStrength ?? 3)
+        _notes = State(initialValue: existingContact?.notes ?? "")
+    }
 
     var body: some View {
         NavigationStack {
@@ -50,7 +64,7 @@ struct ContactFormView: View {
                         .accessibilityIdentifier("contactForm.nameRequiredError")
                 }
             }
-            .navigationTitle("New Contact")
+            .navigationTitle(existingContact == nil ? "New Contact" : "Edit Contact")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -70,16 +84,33 @@ struct ContactFormView: View {
             showsNameRequiredError = true
             return
         }
-        let didSave = viewModel.createContact(
-            name: name,
-            companyName: companyName,
-            jobTitle: jobTitle,
-            contactHandle: contactHandle,
-            howWeMet: howWeMet,
-            relationshipCategory: relationshipCategory,
-            relationshipStrength: relationshipStrength,
-            notes: notes
-        )
+
+        let didSave: Bool
+        if let existingContact {
+            didSave = viewModel.updateContact(
+                existingContact,
+                name: name,
+                companyName: companyName,
+                jobTitle: jobTitle,
+                contactHandle: contactHandle,
+                howWeMet: howWeMet,
+                relationshipCategory: relationshipCategory,
+                relationshipStrength: relationshipStrength,
+                notes: notes
+            )
+        } else {
+            didSave = viewModel.createContact(
+                name: name,
+                companyName: companyName,
+                jobTitle: jobTitle,
+                contactHandle: contactHandle,
+                howWeMet: howWeMet,
+                relationshipCategory: relationshipCategory,
+                relationshipStrength: relationshipStrength,
+                notes: notes
+            )
+        }
+
         if didSave {
             dismiss()
         }

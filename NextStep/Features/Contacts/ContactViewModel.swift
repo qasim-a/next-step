@@ -36,18 +36,60 @@ final class ContactViewModel {
         let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmedName.isEmpty else { return false }
 
+        let contact = NetworkingContact(name: trimmedName)
+        return applyAndSave(
+            name: name, companyName: companyName, jobTitle: jobTitle,
+            contactHandle: contactHandle, howWeMet: howWeMet,
+            relationshipCategory: relationshipCategory,
+            relationshipStrength: relationshipStrength, notes: notes,
+            to: contact
+        )
+    }
+
+    @discardableResult
+    func updateContact(
+        _ contact: NetworkingContact,
+        name: String,
+        companyName: String,
+        jobTitle: String,
+        contactHandle: String,
+        howWeMet: String,
+        relationshipCategory: RelationshipCategory,
+        relationshipStrength: Int,
+        notes: String
+    ) -> Bool {
+        let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmedName.isEmpty else { return false }
+
+        return applyAndSave(
+            name: name, companyName: companyName, jobTitle: jobTitle,
+            contactHandle: contactHandle, howWeMet: howWeMet,
+            relationshipCategory: relationshipCategory,
+            relationshipStrength: relationshipStrength, notes: notes,
+            to: contact
+        )
+    }
+
+    private func applyAndSave(
+        name: String,
+        companyName: String,
+        jobTitle: String,
+        contactHandle: String,
+        howWeMet: String,
+        relationshipCategory: RelationshipCategory,
+        relationshipStrength: Int,
+        notes: String,
+        to contact: NetworkingContact
+    ) -> Bool {
         do {
-            let company = try resolvedCompany(from: companyName)
-            let contact = NetworkingContact(
-                name: trimmedName,
-                company: company,
-                jobTitle: nilIfBlank(jobTitle),
-                contactHandle: nilIfBlank(contactHandle),
-                howWeMet: nilIfBlank(howWeMet),
-                relationshipCategory: relationshipCategory,
-                relationshipStrength: relationshipStrength,
-                notes: nilIfBlank(notes)
-            )
+            contact.name = name.trimmingCharacters(in: .whitespacesAndNewlines)
+            contact.company = try resolvedCompany(from: companyName)
+            contact.jobTitle = nilIfBlank(jobTitle)
+            contact.contactHandle = nilIfBlank(contactHandle)
+            contact.howWeMet = nilIfBlank(howWeMet)
+            contact.relationshipCategory = relationshipCategory
+            contact.relationshipStrength = relationshipStrength
+            contact.notes = nilIfBlank(notes)
             try repository.save(contact)
             loadContacts()
             return true

@@ -2,6 +2,9 @@ import SwiftUI
 
 struct ContactDetailView: View {
     let contact: NetworkingContact
+    var viewModel: ContactViewModel
+
+    @State private var isPresentingEditForm = false
 
     var body: some View {
         List {
@@ -43,5 +46,16 @@ struct ContactDetailView: View {
         .navigationTitle(contact.name)
         .navigationBarTitleDisplayMode(.inline)
         .accessibilityIdentifier("contactDetail.screen")
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button("Edit") {
+                    isPresentingEditForm = true
+                }
+                .accessibilityIdentifier("contactDetail.editButton")
+            }
+        }
+        .sheet(isPresented: $isPresentingEditForm) {
+            ContactFormView(viewModel: viewModel, existingContact: contact)
+        }
     }
 }

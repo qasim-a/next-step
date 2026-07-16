@@ -37,7 +37,9 @@ struct ContactListView: View {
                 }
             }
             .navigationDestination(for: NetworkingContact.self) { contact in
-                ContactDetailView(contact: contact)
+                if let viewModel {
+                    ContactDetailView(contact: contact, viewModel: viewModel)
+                }
             }
         }
         .task {
