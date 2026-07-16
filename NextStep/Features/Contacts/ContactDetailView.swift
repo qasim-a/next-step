@@ -5,8 +5,11 @@ struct ContactDetailView: View {
     var viewModel: ContactViewModel
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.contactRepository) private var contactRepository
     @State private var isPresentingEditForm = false
     @State private var isPresentingDeleteConfirmation = false
+    @State private var interactionViewModel: InteractionViewModel?
+    @State private var isPresentingLogInteractionForm = false
 
     var body: some View {
         List {
@@ -42,8 +45,15 @@ struct ContactDetailView: View {
                 }
             }
 
-            // Interaction history and opportunities sections are added in later specifications;
-            // this List-of-Sections structure lets them slot in without reworking the fields above.
+            // Opportunities sections are added in later specifications; this List-of-Sections
+            // structure lets them slot in without reworking the fields above.
+
+            Section {
+                Button("Log Interaction") {
+                    isPresentingLogInteractionForm = true
+                }
+                .accessibilityIdentifier("contactDetail.logInteractionButton")
+            }
 
             Section {
                 Button("Delete Contact", role: .destructive) {
@@ -66,6 +76,16 @@ struct ContactDetailView: View {
         }
         .sheet(isPresented: $isPresentingEditForm) {
             ContactFormView(viewModel: viewModel, existingContact: contact)
+        }
+        .sheet(isPresented: $isPresentingLogInteractionForm) {
+            if let interactionViewModel {
+                InteractionFormView(viewModel: interactionViewModel)
+            }
+        }
+        .task {
+            if interactionViewModel == nil, let contactRepository {
+                interactionViewModel = InteractionViewModel(repository: contactRepository, contact: contact)
+            }
         }
         .confirmationDialog(
             "Delete \(contact.name)?",
