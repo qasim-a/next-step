@@ -69,4 +69,115 @@ final class ContactManagementFlowUITests: XCTestCase {
     func test_launchingWithNoContacts_showsEmptyStateGuidance() {
         XCTAssertTrue(app.descendants(matching: .any)["contactList.emptyState"].waitForExistence(timeout: 2))
     }
+
+    // MARK: - User Story 2: Find a contact again quickly
+
+    private func createContact(name: String, company: String? = nil, category: String? = nil) {
+        app.buttons["contactList.addButton"].tap()
+
+        let nameField = app.textFields["contactForm.nameField"]
+        XCTAssertTrue(nameField.waitForExistence(timeout: 2))
+        nameField.tap()
+        nameField.typeText(name)
+
+        if let company {
+            let companyField = app.textFields["contactForm.companyField"]
+            companyField.tap()
+            companyField.typeText(company)
+        }
+
+        if let category {
+            app.buttons["contactForm.categoryPicker"].tap()
+            app.buttons[category].tap()
+        }
+
+        app.buttons["contactForm.saveButton"].tap()
+        XCTAssertTrue(app.staticTexts[name].waitForExistence(timeout: 2))
+    }
+
+    private func selectCategoryFilter(_ category: String) {
+        // The filter menu collapses into the nav bar's "More" overflow button. Inside that
+        // overflow presentation its custom accessibilityIdentifier doesn't survive, so it's only
+        // reachable by its current label — "Filter" before any category is selected.
+        app.buttons["OverflowBarButtonItem"].tap()
+        app.buttons["Filter"].tap()
+        app.buttons[category].tap()
+    }
+
+    func test_searchingByName_showsOnlyMatchingContact() {
+        createContact(name: "Sarah Chen")
+        createContact(name: "Michael Osei")
+
+        let searchField = app.searchFields.firstMatch
+        searchField.tap()
+        searchField.typeText("Sarah")
+
+        XCTAssertTrue(app.staticTexts["Sarah Chen"].waitForExistence(timeout: 2))
+        XCTAssertFalse(app.staticTexts["Michael Osei"].exists)
+    }
+
+    func test_searchingByCompany_showsOnlyMatchingContact() {
+        createContact(name: "Sarah Chen", company: "UBS")
+        createContact(name: "Michael Osei", company: "Google")
+
+        let searchField = app.searchFields.firstMatch
+        searchField.tap()
+        searchField.typeText("UBS")
+
+        XCTAssertTrue(app.staticTexts["Sarah Chen"].waitForExistence(timeout: 2))
+        XCTAssertFalse(app.staticTexts["Michael Osei"].exists)
+    }
+
+    func test_filteringByCategory_showsOnlyMatchingContact() {
+        createContact(name: "Sarah Chen", category: "Recruiter")
+        createContact(name: "Michael Osei", category: "Peer")
+
+        selectCategoryFilter("Recruiter")
+
+        XCTAssertTrue(app.staticTexts["Sarah Chen"].waitForExistence(timeout: 2))
+        XCTAssertFalse(app.staticTexts["Michael Osei"].exists)
+    }
+
+    func test_combiningSearchAndCategoryFilter_narrowsToMatchingContact() {
+        createContact(name: "Sarah Chen", company: "UBS", category: "Recruiter")
+        createContact(name: "Sarah Kim", company: "UBS", category: "Peer")
+        createContact(name: "Michael Osei", company: "UBS", category: "Recruiter")
+
+        // Select the category filter before activating search: an active search field hides the
+        // nav bar's other toolbar buttons, so the filter menu isn't reachable while it's focused.
+        selectCategoryFilter("Recruiter")
+
+        let searchField = app.searchFields.firstMatch
+        searchField.tap()
+        searchField.typeText("Sarah")
+
+        XCTAssertTrue(app.staticTexts["Sarah Chen"].waitForExistence(timeout: 2))
+        XCTAssertFalse(app.staticTexts["Sarah Kim"].exists)
+        XCTAssertFalse(app.staticTexts["Michael Osei"].exists)
+    }
+
+    func test_searchWithNoMatches_showsNoResultsState() {
+        createContact(name: "Sarah Chen")
+
+        let searchField = app.searchFields.firstMatch
+        searchField.tap()
+        searchField.typeText("Nonexistent")
+
+        XCTAssertTrue(app.descendants(matching: .any)["contactList.noResultsState"].waitForExistence(timeout: 2))
+    }
+
+    func test_clearingSearch_showsFullListAgain() {
+        createContact(name: "Sarah Chen")
+        createContact(name: "Michael Osei")
+
+        let searchField = app.searchFields.firstMatch
+        searchField.tap()
+        searchField.typeText("Sarah")
+        XCTAssertFalse(app.staticTexts["Michael Osei"].exists)
+
+        searchField.buttons["Clear text"].tap()
+
+        XCTAssertTrue(app.staticTexts["Sarah Chen"].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.staticTexts["Michael Osei"].exists)
+    }
 }
