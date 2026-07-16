@@ -36,6 +36,9 @@ struct ContactListView: View {
                     ContactFormView(viewModel: viewModel)
                 }
             }
+            .navigationDestination(for: NetworkingContact.self) { contact in
+                ContactDetailView(contact: contact)
+            }
         }
         .task {
             if viewModel == nil, let contactRepository {
@@ -89,7 +92,9 @@ struct ContactListView: View {
                 .accessibilityIdentifier("contactList.noResultsState")
             } else {
                 List(filteredContacts) { contact in
-                    ContactRow(contact: contact)
+                    NavigationLink(value: contact) {
+                        ContactRow(contact: contact)
+                    }
                 }
                 .accessibilityIdentifier("contactList.list")
             }
