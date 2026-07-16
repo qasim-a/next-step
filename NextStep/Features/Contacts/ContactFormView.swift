@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct ContactFormView: View {
+    private static let maxNotesLength = 2000
+
     @Environment(\.dismiss) private var dismiss
 
     var viewModel: ContactViewModel
@@ -53,11 +55,21 @@ struct ContactFormView: View {
                     TextField("How we met", text: $howWeMet)
                 }
 
-                Section("Notes") {
+                Section {
                     TextEditor(text: $notes)
                         .frame(minHeight: 100)
                         .accessibilityIdentifier("contactForm.notesField")
                         .accessibilityLabel("Notes")
+                        .onChange(of: notes) { _, newValue in
+                            if newValue.count > Self.maxNotesLength {
+                                notes = String(newValue.prefix(Self.maxNotesLength))
+                            }
+                        }
+                } header: {
+                    Text("Notes")
+                } footer: {
+                    Text("\(notes.count)/\(Self.maxNotesLength)")
+                        .accessibilityIdentifier("contactForm.notesCharacterCount")
                 }
 
                 if showsNameRequiredError {
