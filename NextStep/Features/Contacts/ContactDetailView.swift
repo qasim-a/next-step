@@ -10,6 +10,8 @@ struct ContactDetailView: View {
     @State private var isPresentingDeleteConfirmation = false
     @State private var interactionViewModel: InteractionViewModel?
     @State private var isPresentingLogInteractionForm = false
+    @State private var interactionBeingEdited: Interaction?
+    @State private var interactionPendingDeletion: Interaction?
 
     var body: some View {
         List {
@@ -63,7 +65,18 @@ struct ContactDetailView: View {
                         .accessibilityIdentifier("contactDetail.timelineEmptyState")
                 } else {
                     ForEach(sortedInteractions) { interaction in
-                        InteractionRow(interaction: interaction)
+                        Button {
+                            interactionBeingEdited = interaction
+                        } label: {
+                            InteractionRow(interaction: interaction)
+                        }
+                        .buttonStyle(.plain)
+                        .swipeActions {
+                            Button("Delete", role: .destructive) {
+                                interactionPendingDeletion = interaction
+                            }
+                            .accessibilityIdentifier("contactDetail.deleteInteractionButton")
+                        }
                     }
                 }
             }
@@ -94,6 +107,34 @@ struct ContactDetailView: View {
             if let interactionViewModel {
                 InteractionFormView(viewModel: interactionViewModel)
             }
+        }
+        .sheet(item: $interactionBeingEdited) { interaction in
+            if let interactionViewModel {
+                InteractionFormView(viewModel: interactionViewModel, existingInteraction: interaction)
+            }
+        }
+        .confirmationDialog(
+            "Delete this interaction?",
+            isPresented: Binding(
+                get: { interactionPendingDeletion != nil },
+                set: { isPresented in
+                    if !isPresented { interactionPendingDeletion = nil }
+                }
+            ),
+            titleVisibility: .visible
+        ) {
+            Button("Delete", role: .destructive) {
+                if let interactionPendingDeletion {
+                    interactionViewModel?.deleteInteraction(interactionPendingDeletion)
+                }
+                interactionPendingDeletion = nil
+            }
+            .accessibilityIdentifier("contactDetail.confirmDeleteInteractionButton")
+            Button("Cancel", role: .cancel) {
+                interactionPendingDeletion = nil
+            }
+        } message: {
+            Text("This can't be undone.")
         }
         .task {
             if interactionViewModel == nil, let contactRepository {

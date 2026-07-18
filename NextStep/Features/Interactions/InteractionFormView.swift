@@ -4,12 +4,23 @@ struct InteractionFormView: View {
     @Environment(\.dismiss) private var dismiss
 
     var viewModel: InteractionViewModel
+    var existingInteraction: Interaction?
 
-    @State private var type: InteractionType = .email
-    @State private var date: Date = .now
-    @State private var notes: String = ""
-    @State private var outcome: String = ""
-    @State private var nextAction: String = ""
+    @State private var type: InteractionType
+    @State private var date: Date
+    @State private var notes: String
+    @State private var outcome: String
+    @State private var nextAction: String
+
+    init(viewModel: InteractionViewModel, existingInteraction: Interaction? = nil) {
+        self.viewModel = viewModel
+        self.existingInteraction = existingInteraction
+        _type = State(initialValue: existingInteraction?.type ?? .email)
+        _date = State(initialValue: existingInteraction?.date ?? .now)
+        _notes = State(initialValue: existingInteraction?.notes ?? "")
+        _outcome = State(initialValue: existingInteraction?.outcome ?? "")
+        _nextAction = State(initialValue: existingInteraction?.nextAction ?? "")
+    }
 
     var body: some View {
         NavigationStack {
@@ -39,7 +50,7 @@ struct InteractionFormView: View {
                         .accessibilityLabel("Notes")
                 }
             }
-            .navigationTitle("Log Interaction")
+            .navigationTitle(existingInteraction == nil ? "Log Interaction" : "Edit Interaction")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -55,13 +66,25 @@ struct InteractionFormView: View {
     }
 
     private func save() {
-        let didSave = viewModel.logInteraction(
-            type: type,
-            date: date,
-            notes: notes,
-            outcome: outcome,
-            nextAction: nextAction
-        )
+        let didSave: Bool
+        if let existingInteraction {
+            didSave = viewModel.updateInteraction(
+                existingInteraction,
+                type: type,
+                date: date,
+                notes: notes,
+                outcome: outcome,
+                nextAction: nextAction
+            )
+        } else {
+            didSave = viewModel.logInteraction(
+                type: type,
+                date: date,
+                notes: notes,
+                outcome: outcome,
+                nextAction: nextAction
+            )
+        }
         if didSave {
             dismiss()
         }
