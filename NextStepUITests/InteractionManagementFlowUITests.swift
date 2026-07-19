@@ -119,4 +119,61 @@ final class InteractionManagementFlowUITests: XCTestCase {
     private func todayFormatted() -> String {
         Date.now.formatted(date: .abbreviated, time: .omitted)
     }
+
+    // MARK: - User Story 3: Correct or remove a logged interaction
+
+    private func timelineRow(containing text: String) -> XCUIElement {
+        app.staticTexts.matching(NSPredicate(format: "label CONTAINS[c] %@", text)).firstMatch
+    }
+
+    func test_editingInteraction_updatesTimeline() {
+        createContactAndOpenDetail(name: "Sarah Chen")
+        logInteraction(type: "Email")
+
+        let row = timelineRow(containing: "Email")
+        XCTAssertTrue(row.waitForExistence(timeout: 2))
+        row.tap()
+
+        XCTAssertTrue(app.buttons["interactionForm.typePicker"].waitForExistence(timeout: 2))
+        app.buttons["interactionForm.typePicker"].tap()
+        app.buttons["Interview"].tap()
+        app.buttons["interactionForm.saveButton"].tap()
+
+        let updatedRow = timelineRow(containing: "Interview")
+        XCTAssertTrue(updatedRow.waitForExistence(timeout: 2))
+    }
+
+    func test_cancelingInteractionEdit_leavesInteractionUnchanged() {
+        createContactAndOpenDetail(name: "Michael Osei")
+        logInteraction(type: "Email")
+
+        let row = timelineRow(containing: "Email")
+        XCTAssertTrue(row.waitForExistence(timeout: 2))
+        row.tap()
+
+        XCTAssertTrue(app.buttons["interactionForm.typePicker"].waitForExistence(timeout: 2))
+        app.buttons["interactionForm.typePicker"].tap()
+        app.buttons["Interview"].tap()
+        app.buttons["interactionForm.cancelButton"].tap()
+
+        let unchangedRow = timelineRow(containing: "Email")
+        XCTAssertTrue(unchangedRow.waitForExistence(timeout: 2))
+    }
+
+    func test_deletingInteraction_withConfirmation_removesFromTimeline() {
+        createContactAndOpenDetail(name: "Priya Patel")
+        logInteraction(type: "Email")
+
+        let row = timelineRow(containing: "Email")
+        XCTAssertTrue(row.waitForExistence(timeout: 2))
+        row.swipeLeft()
+
+        XCTAssertTrue(app.buttons["contactDetail.deleteInteractionButton"].waitForExistence(timeout: 2))
+        app.buttons["contactDetail.deleteInteractionButton"].tap()
+
+        XCTAssertTrue(app.buttons["contactDetail.confirmDeleteInteractionButton"].firstMatch.waitForExistence(timeout: 2))
+        app.buttons["contactDetail.confirmDeleteInteractionButton"].firstMatch.tap()
+
+        XCTAssertTrue(app.staticTexts["contactDetail.timelineEmptyState"].waitForExistence(timeout: 2))
+    }
 }

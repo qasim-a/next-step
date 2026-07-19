@@ -62,4 +62,61 @@ struct InteractionRepositoryTests {
         let refetchedContact = try repository.fetch(id: contact.id)
         #expect(refetchedContact?.lastInteractionDate == recent)
     }
+
+    @Test
+    func updatingAnInteractionPersistsChanges() throws {
+        let contact = try makeContact()
+        let interaction = Interaction(type: .email, date: .now)
+        try repository.saveInteraction(interaction, for: contact)
+
+        interaction.type = .interview
+        interaction.outcome = "Moved to final round"
+        try repository.saveInteraction(interaction, for: contact)
+
+        let fetched = try repository.fetchInteractions(for: contact)
+        #expect(fetched.count == 1)
+        #expect(fetched.first?.type == .interview)
+        #expect(fetched.first?.outcome == "Moved to final round")
+    }
+
+    @Test
+    func deletingTheMostRecentInteractionFallsBackToNextMostRecentDate() throws {
+        let contact = try makeContact()
+        let recent = Date.now
+        let older = Calendar.current.date(byAdding: .day, value: -10, to: .now)!
+
+        let recentInteraction = Interaction(type: .email, date: recent)
+        try repository.saveInteraction(recentInteraction, for: contact)
+        try repository.saveInteraction(Interaction(type: .inPersonMeeting, date: older), for: contact)
+
+        try repository.deleteInteraction(recentInteraction)
+
+        let refetchedContact = try repository.fetch(id: contact.id)
+        #expect(refetchedContact?.lastInteractionDate == older)
+    }
+
+    @Test
+    func deletingTheOnlyInteractionRevertsLastInteractionDateToNil() throws {
+        let contact = try makeContact()
+        let interaction = Interaction(type: .email, date: .now)
+        try repository.saveInteraction(interaction, for: contact)
+
+        try repository.deleteInteraction(interaction)
+
+        let refetchedContact = try repository.fetch(id: contact.id)
+        #expect(refetchedContact?.lastInteractionDate == nil)
+        #expect(try repository.fetchInteractions(for: contact).isEmpty)
+    }
+
+    @Test
+    func deletingAContactCascadesToDeleteItsInteractions() throws {
+        let contact = try makeContact()
+        try repository.saveInteraction(Interaction(type: .email, date: .now), for: contact)
+        try repository.saveInteraction(Interaction(type: .interview, date: .now), for: contact)
+
+        try repository.delete(contact)
+
+        let allInteractions = try container.mainContext.fetch(FetchDescriptor<Interaction>())
+        #expect(allInteractions.isEmpty)
+    }
 }

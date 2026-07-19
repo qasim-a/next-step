@@ -1,16 +1,31 @@
 import SwiftUI
 
 struct ContactDetailView: View {
+    // SwiftUI does not reliably present more than one .sheet(...) modifier attached to the same
+    // view — a third sheet added for interaction-editing silently failed to present. All sheet
+    // content is now dispatched through this single enum + one .sheet(item:) instead.
+    private enum ActiveSheet: Identifiable {
+        case editContact
+        case logInteraction
+        case editInteraction(Interaction)
+
+        var id: String {
+            switch self {
+            case .editContact: "editContact"
+            case .logInteraction: "logInteraction"
+            case .editInteraction(let interaction): "editInteraction-\(interaction.id)"
+            }
+        }
+    }
+
     let contact: NetworkingContact
     var viewModel: ContactViewModel
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.contactRepository) private var contactRepository
-    @State private var isPresentingEditForm = false
+    @State private var activeSheet: ActiveSheet?
     @State private var isPresentingDeleteConfirmation = false
     @State private var interactionViewModel: InteractionViewModel?
-    @State private var isPresentingLogInteractionForm = false
-    @State private var interactionBeingEdited: Interaction?
     @State private var interactionPendingDeletion: Interaction?
 
     var body: some View {
@@ -52,7 +67,7 @@ struct ContactDetailView: View {
 
             Section {
                 Button("Log Interaction") {
-                    isPresentingLogInteractionForm = true
+                    activeSheet = .logInteraction
                 }
                 .accessibilityIdentifier("contactDetail.logInteractionButton")
             }
@@ -65,18 +80,17 @@ struct ContactDetailView: View {
                         .accessibilityIdentifier("contactDetail.timelineEmptyState")
                 } else {
                     ForEach(sortedInteractions) { interaction in
-                        Button {
-                            interactionBeingEdited = interaction
-                        } label: {
-                            InteractionRow(interaction: interaction)
-                        }
-                        .buttonStyle(.plain)
-                        .swipeActions {
-                            Button("Delete", role: .destructive) {
-                                interactionPendingDeletion = interaction
+                        InteractionRow(interaction: interaction)
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                activeSheet = .editInteraction(interaction)
                             }
-                            .accessibilityIdentifier("contactDetail.deleteInteractionButton")
-                        }
+                            .swipeActions {
+                                Button("Delete", role: .destructive) {
+                                    interactionPendingDeletion = interaction
+                                }
+                                .accessibilityIdentifier("contactDetail.deleteInteractionButton")
+                            }
                     }
                 }
             }
@@ -95,22 +109,23 @@ struct ContactDetailView: View {
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button("Edit") {
-                    isPresentingEditForm = true
+                    activeSheet = .editContact
                 }
                 .accessibilityIdentifier("contactDetail.editButton")
             }
         }
-        .sheet(isPresented: $isPresentingEditForm) {
-            ContactFormView(viewModel: viewModel, existingContact: contact)
-        }
-        .sheet(isPresented: $isPresentingLogInteractionForm) {
-            if let interactionViewModel {
-                InteractionFormView(viewModel: interactionViewModel)
-            }
-        }
-        .sheet(item: $interactionBeingEdited) { interaction in
-            if let interactionViewModel {
-                InteractionFormView(viewModel: interactionViewModel, existingInteraction: interaction)
+        .sheet(item: $activeSheet) { sheet in
+            switch sheet {
+            case .editContact:
+                ContactFormView(viewModel: viewModel, existingContact: contact)
+            case .logInteraction:
+                if let interactionViewModel {
+                    InteractionFormView(viewModel: interactionViewModel)
+                }
+            case .editInteraction(let interaction):
+                if let interactionViewModel {
+                    InteractionFormView(viewModel: interactionViewModel, existingInteraction: interaction)
+                }
             }
         }
         .confirmationDialog(
