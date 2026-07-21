@@ -26,20 +26,34 @@ depends on getting right.
   `followUp.modelContext == nil` *before* calling `modelContext.insert(followUp)` to decide whether
   this call is a first-time creation (no event, matches Specification 3's existing precedent for
   new follow-ups) or an update to an already-persisted follow-up. Fire the `followUpRescheduled`
-  analytics event only in the second case, and only when `dueDate` actually differs from the
-  previously-persisted value.
+  analytics event whenever it's the second case.
 - **Rationale**: `saveFollowUp` is already the single call site for both create and reschedule
   (this is also why it unconditionally cancels-then-reschedules the notification, per
   Specification 3's research). A SwiftData model's `modelContext` is `nil` until it has been
   inserted into a context, which makes it a reliable, already-available signal for "is this
   object new" without adding a separate `isNew` parameter that every call site would have to pass
   correctly.
+- **Revised during implementation — dropped the "only if `dueDate` actually differs" refinement**:
+  the original plan (see plan.md) was to compare `dueDate` against its previously-persisted value
+  and only fire the event on a genuine change. That turned out to be unworkable as written: SwiftData
+  models are reference types, and `TodayViewModel.rescheduleFollowUp` — the only call site in this
+  app that ever calls `saveFollowUp` on an already-persisted follow-up — mutates
+  `followUp.dueDate` directly *before* calling `saveFollowUp`, so by the time the repository method
+  runs, the "old" value is already gone; there is no public SwiftData API for reading a model's
+  last-persisted value back out mid-edit. Since the only way to reach `saveFollowUp` with an
+  already-persisted follow-up in this app's current UI *is* that reschedule form (there is no
+  separate "edit priority only" flow), `modelContext != nil` alone is an accurate proxy for "this
+  is a reschedule" in practice, so the extra date-comparison was dropped rather than solved with a
+  separate before/after parameter (which would have reopened the "every call site has to remember
+  to pass it correctly" problem this whole approach was chosen to avoid).
 - **Alternatives considered**: Adding an explicit `isReschedule: Bool` parameter to
   `saveFollowUp` — rejected, it duplicates information the object itself already encodes and adds
   a parameter every existing call site (`FollowUpViewModel`, `TodayViewModel`) would need to be
-  audited to pass correctly. Comparing before/after `dueDate` alone without the `modelContext`
-  check — insufficient on its own, since it wouldn't distinguish a genuine reschedule from the
-  due-date-setting that happens during initial creation.
+  audited to pass correctly. Having `TodayViewModel.rescheduleFollowUp` capture the old `dueDate`
+  before mutating and track the event itself, bypassing the repository — would have worked, but
+  moves a data-mutation-adjacent concern out of the repository, breaking the precedent (established
+  in Specification 3) that state-change side effects like this live in the repository so the
+  invariant holds regardless of which view model calls it.
 
 ## Avoiding double-counting "contact opened" across sheet presentations
 

@@ -38,14 +38,14 @@ analytics events or experiments exist, since this story reads `FollowUp` data di
 
 ### Tests for User Story 1
 
-- [ ] T001 [P] [US1] Unit tests for `FollowUpInsights.summarize(_:)` — completion rate math, status counts, empty-state case, and that a deleted follow-up drops out of both numerator and denominator — in `NextStepTests/FollowUpInsightsTests.swift`
-- [ ] T002 [P] [US1] XCUITest covering the summary's numbers matching a mix of completed/overdue/upcoming follow-ups, the empty state with none created, and the numbers updating immediately after completing a follow-up, in `NextStepUITests/ExperimentsAnalyticsFlowUITests.swift`
+- [x] T001 [P] [US1] Unit tests for `FollowUpInsights.summarize(_:)` — completion rate math, status counts, empty-state case, and that a deleted follow-up drops out of both numerator and denominator — in `NextStepTests/FollowUpInsightsTests.swift`
+- [x] T002 [P] [US1] XCUITest covering the summary's numbers matching a mix of completed/overdue/upcoming follow-ups, the empty state with none created, and the numbers updating immediately after completing a follow-up, in `NextStepUITests/ExperimentsAnalyticsFlowUITests.swift`
 
 ### Implementation for User Story 1
 
-- [ ] T003 [US1] Implement the pure `FollowUpInsights.summarize(_:) -> FollowUpSummary` function (completion rate, counts by completed/overdue/upcoming, excluding deleted follow-ups by construction since they're simply absent from the input array) in `NextStep/Features/Dashboard/FollowUpInsights.swift`
-- [ ] T004 [US1] Create `FollowUpSummaryView`, rendering the summary via `ContactRepository.fetchAllFollowUps()` + `FollowUpInsights`, with empty-state guidance when there are no follow-ups, in `NextStep/Features/Dashboard/FollowUpSummaryView.swift` (depends on T003)
-- [ ] T005 [US1] Add an "Insights" toolbar entry point to `NextStep/Features/FollowUps/TodayView.swift` presenting `FollowUpSummaryView` (depends on T004)
+- [x] T003 [US1] Implement the pure `FollowUpInsights.summarize(_:) -> FollowUpSummary` function (completion rate, counts by completed/overdue/upcoming, excluding deleted follow-ups by construction since they're simply absent from the input array) in `NextStep/Features/Dashboard/FollowUpInsights.swift`
+- [x] T004 [US1] Create `FollowUpSummaryView`, rendering the summary via `ContactRepository.fetchAllFollowUps()` + `FollowUpInsights`, with empty-state guidance when there are no follow-ups, in `NextStep/Features/Dashboard/FollowUpSummaryView.swift` (depends on T003)
+- [x] T005 [US1] Add an "Insights" toolbar entry point to `NextStep/Features/FollowUps/TodayView.swift` presenting `FollowUpSummaryView` (depends on T004)
 
 **Checkpoint**: User Story 1 is functional and independently testable — the summary reflects real
 follow-up data without needing User Story 2 or 3 to exist.
@@ -63,15 +63,15 @@ via unit tests that a fresh `ExperimentAssignment` lookup persists its first res
 
 ### Tests for User Story 2
 
-- [ ] T006 [P] [US2] Unit tests for `SwiftDataExperimentProvider` — first access assigns and persists a variant, subsequent accesses return the same persisted variant unchanged — in `NextStepTests/SwiftDataExperimentProviderTests.swift`
+- [x] T006 [P] [US2] Unit tests for `SwiftDataExperimentProvider` — first access assigns and persists a variant, subsequent accesses return the same persisted variant unchanged — in `NextStepTests/SwiftDataExperimentProviderTests.swift`
 
 ### Implementation for User Story 2
 
-- [ ] T007 [P] [US2] Create the `ExperimentAssignment` `@Model` and `ReminderCopyVariant` enum (control, variant) in `NextStep/Core/Models/ExperimentAssignment.swift` per [data-model.md](./data-model.md)
-- [ ] T008 [US2] Create the `ExperimentProviding` protocol and its environment key in `NextStep/Core/Experiments/ExperimentProviding.swift` per [contracts/analytics-and-experiments.md](./contracts/analytics-and-experiments.md) (depends on T007)
-- [ ] T009 [US2] Implement `SwiftDataExperimentProvider` — find-or-create the `ExperimentAssignment` row for `experimentKey == "reminderCopy"`, assigning a variant only if no row exists yet — in `NextStep/Core/Experiments/SwiftDataExperimentProvider.swift` (depends on T008)
-- [ ] T010 [US2] Wire `SwiftDataExperimentProvider` into `NextStep/App/NextStepApp.swift`'s environment injection, alongside the existing `contactRepository`/`notificationScheduling` pattern (depends on T009)
-- [ ] T011 [US2] Update `NextStep/Core/Notifications/UNNotificationScheduler.swift` to take an injected `ExperimentProviding` and use `reminderCopyVariant` to choose the notification's title template (control: "Follow up with {name}"; variant: alternate wording) — the body remains unchanged (user's `suggestedAction` or the existing fallback), per research.md (depends on T009)
+- [x] T007 [P] [US2] Create the `ExperimentAssignment` `@Model` and `ReminderCopyVariant` enum (control, variant) in `NextStep/Core/Models/ExperimentAssignment.swift` per [data-model.md](./data-model.md)
+- [x] T008 [US2] Create the `ExperimentProviding` protocol and its environment key in `NextStep/Core/Experiments/ExperimentProviding.swift` per [contracts/analytics-and-experiments.md](./contracts/analytics-and-experiments.md) (depends on T007)
+- [x] T009 [US2] Implement `SwiftDataExperimentProvider` — find-or-create the `ExperimentAssignment` row for `experimentKey == "reminderCopy"`, assigning a variant only if no row exists yet — in `NextStep/Core/Experiments/SwiftDataExperimentProvider.swift` (depends on T008)
+- [x] T010 [US2] Wire `SwiftDataExperimentProvider` into `NextStep/App/NextStepApp.swift`'s environment injection, alongside the existing `contactRepository`/`notificationScheduling` pattern (depends on T009)
+- [x] T011 [US2] Update `NextStep/Core/Notifications/UNNotificationScheduler.swift` to take an injected `ExperimentProviding` and use `reminderCopyVariant` to choose the notification's title template (control: "Follow up with {name}"; variant: alternate wording) — the body remains unchanged (user's `suggestedAction` or the existing fallback), per research.md (depends on T009)
 
 **Checkpoint**: User Story 2 is functional — reminder titles consistently reflect one assigned
 variant per installation; independently testable via unit tests without User Story 1 or 3.
@@ -89,21 +89,21 @@ variant (from User Story 2, if already assigned).
 
 ### Tests for User Story 3
 
-- [ ] T012 [P] [US3] Unit tests for `SwiftDataAnalyticsTracker` — `track(_:contact:followUp:)` persists an `AnalyticsEvent` with the correct type/timestamp/`contextLabel`, and `fetchRecentEvents()` returns them most-recent-first — in `NextStepTests/SwiftDataAnalyticsTrackerTests.swift`
-- [ ] T013 [P] [US3] XCUITest covering the developer screen's event list ordering, its empty state with nothing tracked yet, and the displayed experiment variant, added to `NextStepUITests/ExperimentsAnalyticsFlowUITests.swift`
+- [x] T012 [P] [US3] Unit tests for `SwiftDataAnalyticsTracker` — `track(_:contact:followUp:)` persists an `AnalyticsEvent` with the correct type/timestamp/`contextLabel`, and `fetchRecentEvents()` returns them most-recent-first — in `NextStepTests/SwiftDataAnalyticsTrackerTests.swift`
+- [x] T013 [P] [US3] XCUITest covering the developer screen's event list ordering, its empty state with nothing tracked yet, and the displayed experiment variant, added to `NextStepUITests/ExperimentsAnalyticsFlowUITests.swift`
 
 ### Implementation for User Story 3
 
-- [ ] T014 [P] [US3] Create the `AnalyticsEvent` `@Model` and `AnalyticsEventType` enum (reminderDisplayed, contactOpened, followUpCompleted, reminderDismissed, followUpRescheduled) in `NextStep/Core/Models/AnalyticsEvent.swift` per [data-model.md](./data-model.md)
-- [ ] T015 [US3] Create the `AnalyticsTracking` protocol and its environment key in `NextStep/Core/Analytics/AnalyticsTracking.swift` per [contracts/analytics-and-experiments.md](./contracts/analytics-and-experiments.md) (depends on T014)
-- [ ] T016 [US3] Implement `SwiftDataAnalyticsTracker` — OSLog structured log entry + `AnalyticsEvent` persistence per call, non-throwing, `fetchRecentEvents()` sorted most-recent-first — in `NextStep/Core/Analytics/SwiftDataAnalyticsTracker.swift` (depends on T015)
-- [ ] T017 [US3] Wire `SwiftDataAnalyticsTracker` into `NextStep/App/NextStepApp.swift`'s environment injection (depends on T016)
-- [ ] T018 [US3] Register a `UNNotificationCategory` with `.customDismissAction` at launch and set it as scheduled reminders' `categoryIdentifier`, in `NextStep/App/NextStepApp.swift` and `NextStep/Core/Notifications/UNNotificationScheduler.swift` — required for dismissal to be observable at all, per research.md (depends on T011)
-- [ ] T019 [US3] Track `reminderDisplayed` (on foreground presentation / delivered-notification handling) and `reminderDismissed` (on `UNNotificationDismissActionIdentifier`) in `NextStep/Core/Notifications/NotificationDelegate.swift` (depends on T017, T018)
-- [ ] T020 [P] [US3] Track `contactOpened` in `NextStep/Features/Contacts/ContactDetailView.swift`, guarded (`@State private var hasTrackedOpen`) to fire once per appearance, not on every sheet dismissal — per research.md (depends on T017)
-- [ ] T021 [US3] Track `followUpCompleted` in `completeFollowUp(_:)`, and `followUpRescheduled` in `saveFollowUp(_:for:)` only when updating an already-persisted follow-up (`modelContext != nil` before insert) whose `dueDate` changed — per research.md's create-vs-reschedule detection — in `NextStep/Core/Persistence/SwiftDataContactRepository.swift` (depends on T017)
-- [ ] T022 [US3] Create `DeveloperAnalyticsView` (event list most-recent-first via `fetchRecentEvents()`, empty state, current `reminderCopyVariant` display) in `NextStep/Features/Dashboard/DeveloperAnalyticsView.swift` (depends on T017, T009)
-- [ ] T023 [US3] Add a "Developer Info" entry point to the existing overflow menu in `NextStep/Features/Contacts/ContactListView.swift`, presenting `DeveloperAnalyticsView` (depends on T022)
+- [x] T014 [P] [US3] Create the `AnalyticsEvent` `@Model` and `AnalyticsEventType` enum (reminderDisplayed, contactOpened, followUpCompleted, reminderDismissed, followUpRescheduled) in `NextStep/Core/Models/AnalyticsEvent.swift` per [data-model.md](./data-model.md)
+- [x] T015 [US3] Create the `AnalyticsTracking` protocol and its environment key in `NextStep/Core/Analytics/AnalyticsTracking.swift` per [contracts/analytics-and-experiments.md](./contracts/analytics-and-experiments.md) (depends on T014)
+- [x] T016 [US3] Implement `SwiftDataAnalyticsTracker` — OSLog structured log entry + `AnalyticsEvent` persistence per call, non-throwing, `fetchRecentEvents()` sorted most-recent-first — in `NextStep/Core/Analytics/SwiftDataAnalyticsTracker.swift` (depends on T015)
+- [x] T017 [US3] Wire `SwiftDataAnalyticsTracker` into `NextStep/App/NextStepApp.swift`'s environment injection (depends on T016)
+- [x] T018 [US3] Register a `UNNotificationCategory` with `.customDismissAction` at launch and set it as scheduled reminders' `categoryIdentifier`, in `NextStep/App/NextStepApp.swift` and `NextStep/Core/Notifications/UNNotificationScheduler.swift` — required for dismissal to be observable at all, per research.md (depends on T011)
+- [x] T019 [US3] Track `reminderDisplayed` (on foreground presentation / delivered-notification handling) and `reminderDismissed` (on `UNNotificationDismissActionIdentifier`) in `NextStep/Core/Notifications/NotificationDelegate.swift` (depends on T017, T018)
+- [x] T020 [P] [US3] Track `contactOpened` in `NextStep/Features/Contacts/ContactDetailView.swift`, guarded (`@State private var hasTrackedOpen`) to fire once per appearance, not on every sheet dismissal — per research.md (depends on T017)
+- [x] T021 [US3] Track `followUpCompleted` in `completeFollowUp(_:)`, and `followUpRescheduled` in `saveFollowUp(_:for:)` only when updating an already-persisted follow-up (`modelContext != nil` before insert) — per research.md's create-vs-reschedule detection — in `NextStep/Core/Persistence/SwiftDataContactRepository.swift` (depends on T017)
+- [x] T022 [US3] Create `DeveloperAnalyticsView` (event list most-recent-first via `fetchRecentEvents()`, empty state, current `reminderCopyVariant` display) in `NextStep/Features/Dashboard/DeveloperAnalyticsView.swift` (depends on T017, T009)
+- [x] T023 [US3] Add a "Developer Info" entry point to the existing overflow menu in `NextStep/Features/Contacts/ContactListView.swift`, presenting `DeveloperAnalyticsView` (depends on T022)
 
 **Checkpoint**: All three user stories are independently functional — this is the full spec.
 
@@ -113,9 +113,9 @@ variant (from User Story 2, if already assigned).
 
 **Purpose**: Improvements that span all three user stories.
 
-- [ ] T024 Add accessibility labels/hints to the new summary and developer-screen controls (`FollowUpSummaryView`, `DeveloperAnalyticsView`, the new "Insights" and "Developer Info" entry points)
-- [ ] T025 Walk through every scenario in [quickstart.md](./quickstart.md) — including the manual-only reminder-copy variant scenario on a real device/simulator and the full Specification 1-3 regression suite — and fix any discrepancies found
-- [ ] T026 [P] Add the Specification 4 entry to `AI_USAGE.md` per the constitution's Development Workflow
+- [x] T024 Add accessibility labels/hints to the new summary and developer-screen controls (`FollowUpSummaryView`, `DeveloperAnalyticsView`, the new "Insights" and "Developer Info" entry points)
+- [x] T025 Walk through every scenario in [quickstart.md](./quickstart.md) — including the manual-only reminder-copy variant scenario on a real device/simulator and the full Specification 1-3 regression suite — and fix any discrepancies found
+- [x] T026 [P] Add the Specification 4 entry to `AI_USAGE.md` per the constitution's Development Workflow
 
 ---
 
