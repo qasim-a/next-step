@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 
+@MainActor
 protocol NotificationScheduling {
     /// Requests notification permission only if the user hasn't already made a choice.
     /// Returns whether reminders can currently be scheduled.

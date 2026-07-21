@@ -1,6 +1,7 @@
 import Foundation
 import SwiftData
 
+@MainActor
 final class SwiftDataContactRepository: ContactRepository {
     private let modelContext: ModelContext
     private let notificationScheduling: NotificationScheduling

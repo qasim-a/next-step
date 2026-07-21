@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 
+@MainActor
 protocol ContactRepository {
     func fetchAll() throws -> [NetworkingContact]
     func fetch(id: UUID) throws -> NetworkingContact?

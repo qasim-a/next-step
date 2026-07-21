@@ -1,6 +1,7 @@
 import Foundation
 import UserNotifications
 
+@MainActor
 final class UNNotificationScheduler: NotificationScheduling {
     private let center = UNUserNotificationCenter.current()
 
