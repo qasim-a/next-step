@@ -1,5 +1,6 @@
 import Foundation
 import SwiftData
+import WidgetKit
 
 @MainActor
 final class SwiftDataContactRepository: ContactRepository {
@@ -140,6 +141,7 @@ final class SwiftDataContactRepository: ContactRepository {
         if !followUp.isCompleted {
             await notificationScheduling.scheduleReminder(for: followUp)
         }
+        WidgetCenter.shared.reloadAllTimelines()
     }
 
     func completeFollowUp(_ followUp: FollowUp) async throws {
@@ -148,11 +150,13 @@ final class SwiftDataContactRepository: ContactRepository {
         try modelContext.save()
         analyticsTracking.track(.followUpCompleted, followUp: followUp)
         await notificationScheduling.cancelReminder(for: followUp)
+        WidgetCenter.shared.reloadAllTimelines()
     }
 
     func deleteFollowUp(_ followUp: FollowUp) async throws {
         await notificationScheduling.cancelReminder(for: followUp)
         modelContext.delete(followUp)
         try modelContext.save()
+        WidgetCenter.shared.reloadAllTimelines()
     }
 }

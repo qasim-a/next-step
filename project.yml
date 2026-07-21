@@ -12,6 +12,10 @@ targets:
     deploymentTarget: "17.0"
     sources:
       - path: NextStep
+      - path: NextStepWidget/FollowUpWidgetContent.swift
+    dependencies:
+      - target: NextStepWidgetExtension
+        embed: true
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.nextstep.app.NextStep
@@ -21,11 +25,16 @@ targets:
         MARKETING_VERSION: "1.0"
         CURRENT_PROJECT_VERSION: "1"
         SWIFT_EMIT_LOC_STRINGS: YES
+        CODE_SIGN_ENTITLEMENTS: NextStep/NextStep.entitlements
     info:
       path: NextStep/Generated-Info.plist
       properties:
         UILaunchScreen:
           UIColorName: LaunchBackground
+        CFBundleURLTypes:
+          - CFBundleURLName: com.nextstep.app.NextStep
+            CFBundleURLSchemes:
+              - nextstep
 
   NextStepTests:
     type: bundle.unit-test
@@ -52,11 +61,36 @@ targets:
         GENERATE_INFOPLIST_FILE: YES
         TEST_TARGET_NAME: NextStep
 
+  NextStepWidgetExtension:
+    type: app-extension
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: NextStepWidget
+      - path: NextStep/Core/Models
+      - path: NextStep/Core/Persistence/SharedModelContainer.swift
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.nextstep.app.NextStep.NextStepWidget
+        PRODUCT_NAME: NextStepWidgetExtension
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: NextStep
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        CODE_SIGN_ENTITLEMENTS: NextStepWidget/NextStepWidget.entitlements
+        SKIP_INSTALL: YES
+    info:
+      path: NextStepWidget/Generated-Info.plist
+      properties:
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+
 schemes:
   NextStep:
     build:
       targets:
         NextStep: all
+        NextStepWidgetExtension: all
         NextStepTests: [test]
         NextStepUITests: [test]
     test:

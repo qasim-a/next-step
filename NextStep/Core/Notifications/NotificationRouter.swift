@@ -2,15 +2,16 @@ import Foundation
 import Observation
 import SwiftUI
 
-/// Bridges a tapped follow-up reminder notification (handled by `NotificationDelegate`, which
-/// runs outside SwiftUI's view hierarchy) to the app's navigation, which lives inside it. Setting
-/// `pendingContactID` is observed by `RootTabView`, which switches to the Contacts tab and
-/// pushes that contact — a tapped notification can arrive while any tab is active, so the
-/// routing decision has to happen above both tabs, not inside `TodayView` itself.
+/// Bridges app-level events that happen outside SwiftUI's view hierarchy (a tapped reminder
+/// notification, handled by `NotificationDelegate`; a tapped home-screen widget, handled by
+/// `NextStepApp`'s `onOpenURL`) to the app's navigation, which lives inside it. `RootTabView`
+/// observes both properties — a tapped notification or widget can arrive while any tab is active,
+/// so the routing decision has to happen above both tabs, not inside a single tab's view.
 @MainActor
 @Observable
 final class NotificationRouter {
     var pendingContactID: UUID?
+    var shouldSelectTodayTab = false
 }
 
 private struct NotificationRouterKey: EnvironmentKey {

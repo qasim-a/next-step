@@ -13,26 +13,10 @@ struct NextStepApp: App {
     private let notificationDelegate: NotificationDelegate
 
     init() {
-        do {
-            if Self.isRunningUnderTest {
-                // Unit tests (hosted inside this app process) and UI tests each manage their
-                // own SwiftData container; avoid this app also standing up the real on-disk
-                // store, which would otherwise double-initialize the same model types.
-                let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
-                modelContainer = try ModelContainer(
-                    for: NetworkingContact.self, Company.self, Interaction.self, FollowUp.self,
-                    ExperimentAssignment.self, AnalyticsEvent.self,
-                    configurations: configuration
-                )
-            } else {
-                modelContainer = try ModelContainer(
-                    for: NetworkingContact.self, Company.self, Interaction.self, FollowUp.self,
-                    ExperimentAssignment.self, AnalyticsEvent.self
-                )
-            }
-        } catch {
-            fatalError("Failed to initialize SwiftData ModelContainer: \(error)")
-        }
+        // Unit tests (hosted inside this app process) and UI tests each manage their own
+        // in-memory store; the real store lives in the shared App Group container so the widget
+        // extension can read it too — see Core/Persistence/SharedModelContainer.swift.
+        modelContainer = SharedModelContainer.make(inMemory: Self.isRunningUnderTest)
 
         experimentProviding = SwiftDataExperimentProvider(modelContext: modelContainer.mainContext)
         analyticsTracking = SwiftDataAnalyticsTracker(modelContext: modelContainer.mainContext)
@@ -73,6 +57,12 @@ struct NextStepApp: App {
     var body: some Scene {
         WindowGroup {
             RootTabView()
+                .onOpenURL { url in
+                    // The widget's tap target (FollowUpWidget.swift) sets this as its widgetURL.
+                    if url.host == "today" {
+                        notificationRouter.shouldSelectTodayTab = true
+                    }
+                }
         }
         .modelContainer(modelContainer)
         .environment(\.contactRepository, contactRepository)

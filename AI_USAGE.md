@@ -22,6 +22,7 @@ Entries are added per specification as it's completed.
 | 002 — Interactions | Spec, plan, tasks, and all implementation (Interaction model, repository extension, timeline UI, edit/delete) | User interacted with the running app between phases; asked for the tap-to-edit bug to be root-caused and fixed rather than worked around | None outright rejected; a mid-debugging architectural change (multi-sheet consolidation) turned out not to be the actual fix — see below | 15/15 unit tests, 16/16 UI tests |
 | 003 — Follow-ups and Notifications | Spec, plan, tasks, and all implementation (FollowUp model, NotificationScheduling protocol + real/no-op implementations, Today screen, TabView restructure, notification routing) | User asked for a size/effort comparison against Specs 1-2 before starting, then asked for the whole spec (all 4 user stories + polish) to be built in one continuous pass | None outright rejected; two real bugs found and fixed during implementation — see below | 47/47 unit tests, 38/38 UI tests (full-project regression) |
 | 004 — Experiments & Analytics | Spec, plan, tasks, and all implementation (AnalyticsTracking + ExperimentProviding protocols and real implementations, AnalyticsEvent/ExperimentAssignment models, follow-up summary, developer screen, five event-tracking call sites) | User asked whether Specs 4-5 were worth doing and whether the app was demo-ready before starting Spec 4; requested this spec's four phases be built in one continuous pass, same cadence as Spec 3 | None outright rejected; one planned design (date-diffing for reschedule detection) was simplified after proving unworkable, and two real bugs were found and fixed during implementation — see below | 60/60 unit tests, 44/44 UI tests (full-project regression) |
+| 005 — Polish | Spec, plan, tasks, and all implementation (accessibility/appearance audit, programmatically generated app icon and launch screen, WidgetKit home-screen widget with App Group data sharing, GitHub Actions CI) | User asked for a simple-but-polished visual approach for the icon before implementation began; requested all three phases be built in one continuous pass | None outright rejected; the audit found the app already dark-mode/Dynamic-Type compliant (nothing to fix), and one Info.plist mechanism (nested `UILaunchScreen`/`NSExtension` keys) required an empirical test to find the working approach — see below | 65/65 unit tests, 44/44 UI tests (full-project regression) |
 
 ### Specification 1: Core Data & Contact Management
 
@@ -233,3 +234,77 @@ across real scheduling over time) cannot be driven by XCUITest, for the same sys
 dialog reason as Specification 3's notification-delivery path.
 `specs/004-experiments-analytics/quickstart.md` documents the manual verification steps; these
 have not yet been run by a human.
+
+### Specification 5: Polish
+
+**AI-assisted**: All artifacts — spec, plan, research, data model, task breakdown, and every line
+of implementation: the dark mode/Dynamic Type audit across every screen from Specifications 1-4, a
+programmatically generated app icon and branded launch screen, the `NextStepWidget` WidgetKit
+extension (`FollowUpWidgetContent`, `FollowUpWidgetTimelineProvider`, `FollowUpWidget`), the
+`SharedModelContainer` relocation into an App Group container, tap-to-open URL routing, the
+`WidgetCenter.reloadAllTimelines()` wiring in `SwiftDataContactRepository`, and the GitHub Actions
+CI workflow.
+
+**Manually reviewed**: The user asked, before implementation began, for the icon's visual approach
+to stay "simple but polished" rather than elaborate — this shaped the icon design (a two-color
+gradient plus a single bold checkmark glyph, reusing iconography the app already established on
+the Today tab, rather than a more detailed illustration). The user then requested all three user
+stories be built in one continuous pass, the same cadence used for Specifications 3 and 4.
+
+**Approaches tried and reworked**:
+
+- The dark mode/Dynamic Type audit (User Story 1) started from a static grep across every
+  `Features/*` view for hard-coded `Color` literals and fixed-point-size fonts — none were found;
+  the app had used semantic colors (`.red`, `.blue`, `.gray`, which are dynamic/adaptive in
+  SwiftUI, not raw RGB) and standard text styles (`.headline`, `.subheadline`) since Specification
+  1. Rather than trust the static result alone, this was verified empirically: `xcrun simctl ui`
+  was used to force dark mode and the largest three Dynamic Type accessibility sizes, and every
+  screen was walked and screenshotted via the project's established throwaway-UI-test-probe
+  pattern. Confirmed clean — no code changes were needed for either requirement, only the
+  icon/launch screen (which were genuine gaps: the project had never had an `Assets.xcassets`
+  catalog at all).
+- Getting a *branded* (not blank) launch screen and the widget extension's required `NSExtension`
+  dictionary both needed a nested Info.plist key (`UILaunchScreen.UIColorName`,
+  `NSExtension.NSExtensionPointIdentifier`) that Xcode's `GENERATE_INFOPLIST_FILE`
+  build-setting-to-plist-key bridge (`INFOPLIST_KEY_<Key>`) cannot express — that bridge only
+  produces flat, top-level keys. Rather than guess at an unconfirmed "magic" flat key name (there
+  is exactly one real special case, `INFOPLIST_KEY_UILaunchScreen_Generation`, and it does not
+  generalize), this was resolved empirically: xcodegen's `info.path` + `info.properties` block
+  generates a real, physical base Info.plist file containing the nested properties, while
+  `GENERATE_INFOPLIST_FILE: YES` remains active alongside it and merges the build-setting-driven
+  keys (like the scene manifest) into that same file at build time — confirmed by inspecting both
+  the generated `.plist` source and the actually-built bundle's `Info.plist` before trusting the
+  approach.
+- The widget's pure content-selection function (`FollowUpWidgetContent`) needed to be compiled into
+  *both* the `NextStep` app target (so `NextStepTests` can exercise it via `@testable import
+  NextStep`) and the `NextStepWidget` extension target (so the widget can actually use it) without
+  duplicating the file — resolved by listing the single file path under both targets' `sources` in
+  `project.yml`, the same pattern applied to the SwiftData model files and `SharedModelContainer`,
+  which the widget extension also needs compiled in directly since it constructs its own
+  `ModelContainer` in a separate process.
+
+**The one change in this whole five-spec sequence that touches already-working persistence,
+not just adds new behavior**: relocating the SwiftData store from its default per-target sandbox
+location into a shared App Group container (required because a widget extension is a separate
+sandboxed process that cannot read the main app's private container) was treated with extra
+caution per the plan's own risk flag. After the relocation, `test_relaunchingApp_persistsContactAcrossLaunch`
+— the one existing test that exercises the real, on-disk (non-in-memory) store, since every other
+UI test runs under `-UITestResetState`'s in-memory configuration — was run in isolation first and
+confirmed passing before proceeding further into the widget target's implementation, then the full
+regression suite was run again at the end.
+
+**Validating tests**: `NextStepTests` gains `FollowUpWidgetContentTests` (top-3 cap, most-urgent-
+first ordering, excludes upcoming/completed, empty on nothing due). No new UI tests — User Story
+1's appearance work and User Story 2's real on-device widget behavior aren't mechanically
+assertable via XCUITest (see quickstart.md); Specifications 1-4's full `NextStepUITests` suite
+re-passing unchanged is this spec's regression evidence that nothing broke. Full project suite:
+65/65 unit tests, 44/44 UI tests, all passing.
+
+**Not automatable — flagged, not silently skipped**: dark mode and Dynamic Type rendering were
+verified visually via simulator screenshots (see above) rather than a human on a physical device;
+the widget's actual on-device behavior — correct content and ordering once genuinely added to a
+home screen, tap-to-open, and post-completion refresh timing — has not been verified by a human at
+all, since there is no available tool in this environment to add a widget to a simulator's home
+screen or otherwise drive SpringBoard. CI's correctness (pass on push, fail on a broken test,
+visible PR status) has not yet been observed on a real GitHub Actions run either.
+`specs/005-polish/quickstart.md` documents exactly what remains for a human to check.

@@ -31,6 +31,11 @@ struct RootTabView: View {
             contactsPath = NavigationPath([contact])
             notificationRouter?.pendingContactID = nil
         }
+        .onChange(of: notificationRouter?.shouldSelectTodayTab) { _, shouldSelect in
+            guard shouldSelect == true else { return }
+            selectedTab = .today
+            notificationRouter?.shouldSelectTodayTab = false
+        }
         .task {
             await SampleDataSeeder.seedIfNeeded(repository: contactRepository)
         }

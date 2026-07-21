@@ -39,14 +39,14 @@ Screen and cold-launch for a real icon/launch screen — independent of the widg
 
 ### Implementation for User Story 1
 
-- [ ] T001 [P] [US1] Audit `NextStep/Features/FollowUps/FollowUpRow.swift` and `TodayView.swift` for hard-coded colors (priority badges) and fixed-size text; replace with semantic system colors and default Dynamic-Type-respecting fonts
-- [ ] T002 [P] [US1] Audit `NextStep/Features/Dashboard/FollowUpSummaryView.swift` and `DeveloperAnalyticsView.swift` for the same
-- [ ] T003 [P] [US1] Audit `NextStep/Features/Contacts/ContactListView.swift`, `ContactDetailView.swift`, `ContactFormView.swift` for the same
-- [ ] T004 [P] [US1] Audit `NextStep/Features/Interactions/InteractionFormView.swift`, `InteractionRow.swift` for the same
-- [ ] T005 [P] [US1] Audit `NextStep/Features/FollowUps/FollowUpFormView.swift` for the same
-- [ ] T006 [US1] Generate the app icon per research.md: a small SwiftUI view (colored rounded background + the `checklist` SF Symbol already used on the Today tab) rendered via `ImageRenderer` at each required size, assembled into `NextStep/Assets.xcassets/AppIcon.appiconset/` with a generated `Contents.json` — simple, flat, not overdesigned, matching the app's existing iconography
-- [ ] T007 [US1] Add `NextStep/Assets.xcassets` to `project.yml`'s resources and set `ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon` so the generated icon is used (depends on T006)
-- [ ] T008 [US1] Replace the blank system-generated launch screen with a deliberate one (a centered icon/name on a plain background) via `project.yml`'s `INFOPLIST_KEY_UILaunchScreen_*` settings, consistent visually with the new app icon (depends on T006)
+- [x] T001 [P] [US1] Audit `NextStep/Features/FollowUps/FollowUpRow.swift` and `TodayView.swift` for hard-coded colors (priority badges) and fixed-size text; replace with semantic system colors and default Dynamic-Type-respecting fonts
+- [x] T002 [P] [US1] Audit `NextStep/Features/Dashboard/FollowUpSummaryView.swift` and `DeveloperAnalyticsView.swift` for the same
+- [x] T003 [P] [US1] Audit `NextStep/Features/Contacts/ContactListView.swift`, `ContactDetailView.swift`, `ContactFormView.swift` for the same
+- [x] T004 [P] [US1] Audit `NextStep/Features/Interactions/InteractionFormView.swift`, `InteractionRow.swift` for the same
+- [x] T005 [P] [US1] Audit `NextStep/Features/FollowUps/FollowUpFormView.swift` for the same
+- [x] T006 [US1] Generate the app icon per research.md: a small SwiftUI view (colored rounded background + the `checklist` SF Symbol already used on the Today tab) rendered via `ImageRenderer` at each required size, assembled into `NextStep/Assets.xcassets/AppIcon.appiconset/` with a generated `Contents.json` — simple, flat, not overdesigned, matching the app's existing iconography
+- [x] T007 [US1] Add `NextStep/Assets.xcassets` to `project.yml`'s resources and set `ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon` so the generated icon is used (depends on T006)
+- [x] T008 [US1] Replace the blank system-generated launch screen with a deliberate one (a centered icon/name on a plain background) via `project.yml`'s `INFOPLIST_KEY_UILaunchScreen_*` settings, consistent visually with the new app icon (depends on T006)
 
 **Checkpoint**: User Story 1 is functional and independently verifiable — dark mode, Dynamic Type,
 icon, and launch screen are all addressed without needing the widget or CI to exist.
@@ -64,18 +64,18 @@ after completing a follow-up in-app.
 
 ### Tests for User Story 2
 
-- [ ] T009 [P] [US2] Unit tests for `FollowUpWidgetContent.select` — top-3 cap, most-urgent-first ordering (overdue before due-today, oldest-overdue first), excludes upcoming/completed, empty-array on nothing due — in `NextStepTests/FollowUpWidgetContentTests.swift`
+- [x] T009 [P] [US2] Unit tests for `FollowUpWidgetContent.select` — top-3 cap, most-urgent-first ordering (overdue before due-today, oldest-overdue first), excludes upcoming/completed, empty-array on nothing due — in `NextStepTests/FollowUpWidgetContentTests.swift`
 
 ### Implementation for User Story 2
 
-- [ ] T010 [US2] Add App Group `group.com.nextstep.app.NextStep` entitlements — `NextStep/NextStep.entitlements` for the main app target, configured in `project.yml`
-- [ ] T011 [US2] Relocate the `ModelContainer` in `NextStep/App/NextStepApp.swift` to a `ModelConfiguration(url:)` inside the shared App Group container via `FileManager.default.containerURL(forSecurityApplicationGroupIdentifier:)`, for both the real and in-memory (test) configurations (depends on T010)
-- [ ] T012 [P] [US2] Implement the pure `FollowUpWidgetContent.select(_:today:calendar:)` function per contracts/widget-and-ci.md in `NextStepWidget/FollowUpWidgetContent.swift`
-- [ ] T013 [US2] Add the `NextStepWidget` Widget Extension target to `project.yml` (iOS 17+, same App Group entitlement as T010 via `NextStepWidget/NextStepWidget.entitlements`) (depends on T010)
-- [ ] T014 [US2] Implement `FollowUpWidgetTimelineProvider` — opens a `ModelContext` against the shared App Group `ModelContainer`, fetches `FollowUp`s, calls `FollowUpWidgetContent.select(_:)`, returns a `.after(date)` timeline — in `NextStepWidget/FollowUpWidgetTimelineProvider.swift` (depends on T011, T012, T013)
-- [ ] T015 [US2] Implement `FollowUpWidget` (widget configuration + SwiftUI view: up to 3 rows or a "Nothing due" empty state, `widgetURL` for tap-to-open) and `NextStepWidgetBundle` entry point in `NextStepWidget/FollowUpWidget.swift` and `NextStepWidgetBundle.swift` (depends on T014)
-- [ ] T016 [US2] Wire tap-to-open routing: handle the widget's URL via `.onOpenURL` in `NextStep/App/NextStepApp.swift`, routing to the Today tab through `RootTabView`'s existing tab-selection state (depends on T015)
-- [ ] T017 [US2] Call `WidgetCenter.shared.reloadAllTimelines()` from `saveFollowUp(_:for:)`, `completeFollowUp(_:)`, and `deleteFollowUp(_:)` in `NextStep/Core/Persistence/SwiftDataContactRepository.swift` (depends on T014)
+- [x] T010 [US2] Add App Group `group.com.nextstep.app.NextStep` entitlements — `NextStep/NextStep.entitlements` for the main app target, configured in `project.yml`
+- [x] T011 [US2] Relocate the `ModelContainer` in `NextStep/App/NextStepApp.swift` to a `ModelConfiguration(url:)` inside the shared App Group container via `FileManager.default.containerURL(forSecurityApplicationGroupIdentifier:)`, for both the real and in-memory (test) configurations (depends on T010)
+- [x] T012 [P] [US2] Implement the pure `FollowUpWidgetContent.select(_:today:calendar:)` function per contracts/widget-and-ci.md in `NextStepWidget/FollowUpWidgetContent.swift`
+- [x] T013 [US2] Add the `NextStepWidget` Widget Extension target to `project.yml` (iOS 17+, same App Group entitlement as T010 via `NextStepWidget/NextStepWidget.entitlements`) (depends on T010)
+- [x] T014 [US2] Implement `FollowUpWidgetTimelineProvider` — opens a `ModelContext` against the shared App Group `ModelContainer`, fetches `FollowUp`s, calls `FollowUpWidgetContent.select(_:)`, returns a `.after(date)` timeline — in `NextStepWidget/FollowUpWidgetTimelineProvider.swift` (depends on T011, T012, T013)
+- [x] T015 [US2] Implement `FollowUpWidget` (widget configuration + SwiftUI view: up to 3 rows or a "Nothing due" empty state, `widgetURL` for tap-to-open) and `NextStepWidgetBundle` entry point in `NextStepWidget/FollowUpWidget.swift` and `NextStepWidgetBundle.swift` (depends on T014)
+- [x] T016 [US2] Wire tap-to-open routing: handle the widget's URL via `.onOpenURL` in `NextStep/App/NextStepApp.swift`, routing to the Today tab through `RootTabView`'s existing tab-selection state (depends on T015)
+- [x] T017 [US2] Call `WidgetCenter.shared.reloadAllTimelines()` from `saveFollowUp(_:for:)`, `completeFollowUp(_:)`, and `deleteFollowUp(_:)` in `NextStep/Core/Persistence/SwiftDataContactRepository.swift` (depends on T014)
 
 **Checkpoint**: User Story 2 is functional — the widget shows correct, ordered content and stays
 fresh; independently testable via T009 even before manual on-device verification.
@@ -93,7 +93,7 @@ failure with the failing test identifiable; fix it, confirm success — independ
 
 ### Implementation for User Story 3
 
-- [ ] T018 [US3] Create `.github/workflows/ci.yml` per contracts/widget-and-ci.md — triggers on `push` and `pull_request`, checks out the repo, selects an available Xcode, runs `xcodegen generate`, then `xcodebuild test -scheme NextStep -only-testing:NextStepTests` against a runner-available iOS Simulator destination
+- [x] T018 [US3] Create `.github/workflows/ci.yml` per contracts/widget-and-ci.md — triggers on `push` and `pull_request`, checks out the repo, selects an available Xcode, runs `xcodegen generate`, then `xcodebuild test -scheme NextStep -only-testing:NextStepTests` against a runner-available iOS Simulator destination
 
 **Checkpoint**: User Story 3 is functional — verify by pushing a commit and observing the Actions
 run and PR status directly on GitHub (see quickstart.md).
@@ -104,8 +104,8 @@ run and PR status directly on GitHub (see quickstart.md).
 
 **Purpose**: Final verification spanning all three user stories.
 
-- [ ] T019 Walk through every scenario in [quickstart.md](./quickstart.md) — dark mode, Dynamic Type, icon, launch screen, widget placement/ordering/tap-to-open/refresh, and CI's pass/fail visibility on a real push and PR — and fix any discrepancies found
-- [ ] T020 [P] Add the Specification 5 entry to `AI_USAGE.md` per the constitution's Development Workflow
+- [x] T019 Walk through every scenario in [quickstart.md](./quickstart.md) — dark mode, Dynamic Type, icon, launch screen, widget placement/ordering/tap-to-open/refresh, and CI's pass/fail visibility on a real push and PR — and fix any discrepancies found
+- [x] T020 [P] Add the Specification 5 entry to `AI_USAGE.md` per the constitution's Development Workflow
 
 ---
 
