@@ -8,12 +8,16 @@ struct ContactDetailView: View {
         case editContact
         case logInteraction
         case editInteraction(Interaction)
+        case createFollowUp
+        case createFollowUpFromInteraction(Interaction)
 
         var id: String {
             switch self {
             case .editContact: "editContact"
             case .logInteraction: "logInteraction"
             case .editInteraction(let interaction): "editInteraction-\(interaction.id)"
+            case .createFollowUp: "createFollowUp"
+            case .createFollowUpFromInteraction(let interaction): "createFollowUpFromInteraction-\(interaction.id)"
             }
         }
     }
@@ -27,6 +31,7 @@ struct ContactDetailView: View {
     @State private var isPresentingDeleteConfirmation = false
     @State private var interactionViewModel: InteractionViewModel?
     @State private var interactionPendingDeletion: Interaction?
+    @State private var followUpViewModel: FollowUpViewModel?
 
     var body: some View {
         List {
@@ -70,6 +75,11 @@ struct ContactDetailView: View {
                     activeSheet = .logInteraction
                 }
                 .accessibilityIdentifier("contactDetail.logInteractionButton")
+
+                Button("Create Follow-Up") {
+                    activeSheet = .createFollowUp
+                }
+                .accessibilityIdentifier("contactDetail.createFollowUpButton")
             }
 
             Section("Timeline") {
@@ -85,11 +95,18 @@ struct ContactDetailView: View {
                             .onTapGesture {
                                 activeSheet = .editInteraction(interaction)
                             }
-                            .swipeActions {
+                            .swipeActions(edge: .trailing) {
                                 Button("Delete", role: .destructive) {
                                     interactionPendingDeletion = interaction
                                 }
                                 .accessibilityIdentifier("contactDetail.deleteInteractionButton")
+                            }
+                            .swipeActions(edge: .leading) {
+                                Button("Follow Up") {
+                                    activeSheet = .createFollowUpFromInteraction(interaction)
+                                }
+                                .tint(.blue)
+                                .accessibilityIdentifier("contactDetail.createFollowUpFromInteractionButton")
                             }
                     }
                 }
@@ -126,6 +143,14 @@ struct ContactDetailView: View {
                 if let interactionViewModel {
                     InteractionFormView(viewModel: interactionViewModel, existingInteraction: interaction)
                 }
+            case .createFollowUp:
+                if let followUpViewModel {
+                    FollowUpFormView(viewModel: followUpViewModel)
+                }
+            case .createFollowUpFromInteraction(let interaction):
+                if let followUpViewModel {
+                    FollowUpFormView(viewModel: followUpViewModel, originatingInteraction: interaction)
+                }
             }
         }
         .confirmationDialog(
@@ -154,6 +179,9 @@ struct ContactDetailView: View {
         .task {
             if interactionViewModel == nil, let contactRepository {
                 interactionViewModel = InteractionViewModel(repository: contactRepository, contact: contact)
+            }
+            if followUpViewModel == nil, let contactRepository {
+                followUpViewModel = FollowUpViewModel(repository: contactRepository, contact: contact)
             }
         }
         .confirmationDialog(
