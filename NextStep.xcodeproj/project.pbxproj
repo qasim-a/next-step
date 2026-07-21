@@ -43,6 +43,7 @@
 		DBCA1F4D939624A40E8CEA18 /* InteractionTimeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = A011F982D1B9C6A1CA7AC48C /* InteractionTimeline.swift */; };
 		DE052091D07A2C28C73B6D40 /* NoOpNotificationSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D2B37E9AEBC952935B31B7 /* NoOpNotificationSchedulerTests.swift */; };
 		E696125A8493AC83D05F9532 /* FollowUpRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FD68458311629F0591ECD5 /* FollowUpRepositoryTests.swift */; };
+		F0F2DDBF6FF54F3E1836B2D1 /* SampleDataSeeder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDFDF26E9EB07448BCD4229 /* SampleDataSeeder.swift */; };
 		F612CBF1FE73AEEBFC5C2DB4 /* FollowUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 470436C96622B3A24E400854 /* FollowUp.swift */; };
 		FD627155B2F4120A699F570D /* InteractionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E41B66E43AE07FD8DCE03 /* InteractionViewModel.swift */; };
 /* End PBXBuildFile section */
@@ -92,6 +93,7 @@
 		923C69C1D052836C88B9E2A1 /* NextStepTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = NextStepTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		97FD68458311629F0591ECD5 /* FollowUpRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowUpRepositoryTests.swift; sourceTree = "<group>"; };
 		9C3E41B66E43AE07FD8DCE03 /* InteractionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionViewModel.swift; sourceTree = "<group>"; };
+		9CDFDF26E9EB07448BCD4229 /* SampleDataSeeder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleDataSeeder.swift; sourceTree = "<group>"; };
 		A011F982D1B9C6A1CA7AC48C /* InteractionTimeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionTimeline.swift; sourceTree = "<group>"; };
 		A7FF808359D8FDC6088E919A /* Company.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Company.swift; sourceTree = "<group>"; };
 		AA1C58AFB68824C0EB600EC0 /* InteractionManagementFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionManagementFlowUITests.swift; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 			children = (
 				65C5152CBF96984F19045485 /* NextStepApp.swift */,
 				616BA3BEECC431AF8F73E764 /* RootTabView.swift */,
+				9CDFDF26E9EB07448BCD4229 /* SampleDataSeeder.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -404,6 +407,7 @@
 				AF91E0F545AE1237FF797DCD /* NotificationRouter.swift in Sources */,
 				3DA07D41F84EB65024AF6811 /* NotificationScheduling.swift in Sources */,
 				6CC2521ECACED15DE871687C /* RootTabView.swift in Sources */,
+				F0F2DDBF6FF54F3E1836B2D1 /* SampleDataSeeder.swift in Sources */,
 				7DC99B7B614DFD8C6CE71CFB /* SwiftDataContactRepository.swift in Sources */,
 				A92209D25371D50DFF34595D /* TodayView.swift in Sources */,
 				03C5EDC0DABA40AA3184B5EE /* TodayViewModel.swift in Sources */,

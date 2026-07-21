@@ -31,5 +31,8 @@ struct RootTabView: View {
             contactsPath = NavigationPath([contact])
             notificationRouter?.pendingContactID = nil
         }
+        .task {
+            await SampleDataSeeder.seedIfNeeded(repository: contactRepository)
+        }
     }
 }
