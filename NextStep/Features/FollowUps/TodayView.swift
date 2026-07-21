@@ -7,6 +7,7 @@ struct TodayView: View {
     @State private var followUpBeingEdited: FollowUp?
     @State private var followUpPendingDeletion: FollowUp?
     @State private var hasRequestedNotificationAuthorization = false
+    @State private var isShowingSummary = false
 
     var body: some View {
         NavigationStack {
@@ -18,6 +19,20 @@ struct TodayView: View {
                 }
             }
             .navigationTitle("Today")
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    Button {
+                        isShowingSummary = true
+                    } label: {
+                        Label("Insights", systemImage: "chart.bar")
+                    }
+                    .accessibilityIdentifier("today.insightsButton")
+                    .accessibilityHint("Shows your follow-up completion rate and status counts")
+                }
+            }
+            .sheet(isPresented: $isShowingSummary) {
+                FollowUpSummaryView()
+            }
             .sheet(item: $followUpBeingEdited) { followUp in
                 FollowUpFormView(existingFollowUp: followUp) { dueDate, priority, suggestedAction in
                     await viewModel?.rescheduleFollowUp(

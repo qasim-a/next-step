@@ -14,8 +14,12 @@
 		177A4F708D9E5D473C5369D7 /* SwiftDataContactRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED6E5F16E3E04F651715ECE /* SwiftDataContactRepositoryTests.swift */; };
 		1BE7E4F6AE4C82020418E373 /* Interaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD7D22D079B44F19203DA8A /* Interaction.swift */; };
 		2C0130551CFD8B83E8096F18 /* InteractionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099DA5E39BCEE865D4858022 /* InteractionRow.swift */; };
+		302CD33E62FCF3E2791D6F73 /* FollowUpInsights.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F760F1EA4A0FE88AEA697E /* FollowUpInsights.swift */; };
+		357E960CFA2BDBA9B8BD7804 /* AnalyticsEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FA343353A5715CCC570AB5 /* AnalyticsEvent.swift */; };
+		3A19EBFCE70D1F61523CBD76 /* SwiftDataExperimentProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AD727441AEBACAFC211DB8 /* SwiftDataExperimentProviderTests.swift */; };
 		3AE057702D5389B6964F4A43 /* InteractionFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10779AC8F64A4D9BC1E697F8 /* InteractionFormView.swift */; };
 		3DA07D41F84EB65024AF6811 /* NotificationScheduling.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C4AB29D83A1F3EF0A736B8 /* NotificationScheduling.swift */; };
+		461F10B932AF51A2569EA4AB /* AnalyticsTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C8EDF7CCBA0C8415F11B83 /* AnalyticsTracking.swift */; };
 		46F3B9A093C0E798EB731530 /* NetworkingContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC8FC4B96255EACDED0536A /* NetworkingContact.swift */; };
 		481A14E5EB80970314E2843D /* InteractionTimelineOrderingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17FC0974368EE8177BD01CE6 /* InteractionTimelineOrderingTests.swift */; };
 		4B69099E0239BC0003AABB9F /* ContactFiltering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A8D0508FA112B35BC461927 /* ContactFiltering.swift */; };
@@ -23,6 +27,8 @@
 		4E6DFE0ED8B6B2748FA3249D /* NotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56FABAB37CB36B2C8C6EF987 /* NotificationDelegate.swift */; };
 		582BD0C55F1214FA0F1EC91E /* FollowUpBucketing.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CA1BD2D9C5671FA013F3A6 /* FollowUpBucketing.swift */; };
 		585DF1D12D9E47EECBEF56B7 /* FollowUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00813B3F2FBAFD54336D475D /* FollowUpViewModel.swift */; };
+		6258622A60D3EC8D5AAAE370 /* SwiftDataAnalyticsTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CDB9EE3C6756CBF3A9B532E /* SwiftDataAnalyticsTrackerTests.swift */; };
+		66FD3DB8D47F75635E885865 /* ExperimentProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8090815216F168BD18735813 /* ExperimentProviding.swift */; };
 		6A95A8882B512264C5054EF9 /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FF808359D8FDC6088E919A /* Company.swift */; };
 		6CA99053A2AA14157313C7A0 /* ContactDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0CEBB04423246BD88A3BD7 /* ContactDetailView.swift */; };
 		6CC2521ECACED15DE871687C /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616BA3BEECC431AF8F73E764 /* RootTabView.swift */; };
@@ -31,18 +37,25 @@
 		748D499B9B4B62D60A5987B4 /* ContactViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21919843565BF9F403C3C847 /* ContactViewModel.swift */; };
 		7DC99B7B614DFD8C6CE71CFB /* SwiftDataContactRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4281202B4E38ACE89D93E617 /* SwiftDataContactRepository.swift */; };
 		7EE92815B5B25A9FB0911978 /* InteractionManagementFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1C58AFB68824C0EB600EC0 /* InteractionManagementFlowUITests.swift */; };
+		85D083C33B80985B90A0AC4F /* SwiftDataExperimentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F86C62A7243C1727ABD9BD /* SwiftDataExperimentProvider.swift */; };
+		85D39F9B833954DBFD5CFCDD /* FollowUpInsightsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4794FB83C2EA85A65670BFE /* FollowUpInsightsTests.swift */; };
 		8F470475C0EADD0CBAA3E130 /* ContactListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF802D3104D4074B91B74891 /* ContactListView.swift */; };
+		99E572E7A254EE645307E2C0 /* FollowUpSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D4E1E0F0F6F9676A4ED361 /* FollowUpSummaryView.swift */; };
 		A376AC6741E52E65EFB56CC3 /* ContactFilteringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26DACD2609E2815D3F3D6FED /* ContactFilteringTests.swift */; };
 		A4C33BFD4BC20376DD573965 /* NoOpNotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C54E98BC675010747A0A3AF /* NoOpNotificationScheduler.swift */; };
 		A6AF8537D0283043B43B2B30 /* FollowUpBucketingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7597B2113F635E32AE67EB48 /* FollowUpBucketingTests.swift */; };
 		A92209D25371D50DFF34595D /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA6C266608F9682F95F4BD9 /* TodayView.swift */; };
 		AF91E0F545AE1237FF797DCD /* NotificationRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F9563C38D4E5EDCF86D9B8A /* NotificationRouter.swift */; };
+		B472B3FDE93BE5AF89CD2370 /* ExperimentsAnalyticsFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A85312A730BF79B8B35024A /* ExperimentsAnalyticsFlowUITests.swift */; };
 		BBA3383941C4A3785E0033D5 /* FollowUpFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF02820DE198AB2F8EADE488 /* FollowUpFormView.swift */; };
+		D11677FB00F56447482552BE /* SwiftDataAnalyticsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1804742B6B3666F205288CDD /* SwiftDataAnalyticsTracker.swift */; };
 		DABA3CD1EEC6B675548C673E /* ContactManagementFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0405A783C48FAA4C7DD4AA /* ContactManagementFlowUITests.swift */; };
 		DAEC1E364342EF355409FE47 /* FollowUpManagementFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25954DF22BBEF68BAB6EFA78 /* FollowUpManagementFlowUITests.swift */; };
 		DBCA1F4D939624A40E8CEA18 /* InteractionTimeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = A011F982D1B9C6A1CA7AC48C /* InteractionTimeline.swift */; };
 		DE052091D07A2C28C73B6D40 /* NoOpNotificationSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D2B37E9AEBC952935B31B7 /* NoOpNotificationSchedulerTests.swift */; };
+		E10A8C9AE74E636648B0A813 /* DeveloperAnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C200C43C74ECD88E3B5F74F /* DeveloperAnalyticsView.swift */; };
 		E696125A8493AC83D05F9532 /* FollowUpRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FD68458311629F0591ECD5 /* FollowUpRepositoryTests.swift */; };
+		F0855313BC62302662E06A4E /* ExperimentAssignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDA27C0C49FF87C55A37C5 /* ExperimentAssignment.swift */; };
 		F0F2DDBF6FF54F3E1836B2D1 /* SampleDataSeeder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDFDF26E9EB07448BCD4229 /* SampleDataSeeder.swift */; };
 		F612CBF1FE73AEEBFC5C2DB4 /* FollowUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 470436C96622B3A24E400854 /* FollowUp.swift */; };
 		FD627155B2F4120A699F570D /* InteractionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E41B66E43AE07FD8DCE03 /* InteractionViewModel.swift */; };
@@ -72,6 +85,8 @@
 		0C3C7CE31501FD9230803D70 /* FollowUpRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowUpRow.swift; sourceTree = "<group>"; };
 		10779AC8F64A4D9BC1E697F8 /* InteractionFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionFormView.swift; sourceTree = "<group>"; };
 		17FC0974368EE8177BD01CE6 /* InteractionTimelineOrderingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionTimelineOrderingTests.swift; sourceTree = "<group>"; };
+		1804742B6B3666F205288CDD /* SwiftDataAnalyticsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataAnalyticsTracker.swift; sourceTree = "<group>"; };
+		1A85312A730BF79B8B35024A /* ExperimentsAnalyticsFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperimentsAnalyticsFlowUITests.swift; sourceTree = "<group>"; };
 		21919843565BF9F403C3C847 /* ContactViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactViewModel.swift; sourceTree = "<group>"; };
 		25954DF22BBEF68BAB6EFA78 /* FollowUpManagementFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowUpManagementFlowUITests.swift; sourceTree = "<group>"; };
 		26DACD2609E2815D3F3D6FED /* ContactFilteringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactFilteringTests.swift; sourceTree = "<group>"; };
@@ -80,18 +95,26 @@
 		3B021449D063545802AB0D53 /* ContactFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactFormView.swift; sourceTree = "<group>"; };
 		4281202B4E38ACE89D93E617 /* SwiftDataContactRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataContactRepository.swift; sourceTree = "<group>"; };
 		470436C96622B3A24E400854 /* FollowUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowUp.swift; sourceTree = "<group>"; };
+		47C8EDF7CCBA0C8415F11B83 /* AnalyticsTracking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsTracking.swift; sourceTree = "<group>"; };
 		4A8D0508FA112B35BC461927 /* ContactFiltering.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactFiltering.swift; sourceTree = "<group>"; };
+		4CDB9EE3C6756CBF3A9B532E /* SwiftDataAnalyticsTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataAnalyticsTrackerTests.swift; sourceTree = "<group>"; };
 		56FABAB37CB36B2C8C6EF987 /* NotificationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDelegate.swift; sourceTree = "<group>"; };
+		5C200C43C74ECD88E3B5F74F /* DeveloperAnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperAnalyticsView.swift; sourceTree = "<group>"; };
 		616BA3BEECC431AF8F73E764 /* RootTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabView.swift; sourceTree = "<group>"; };
 		65C5152CBF96984F19045485 /* NextStepApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextStepApp.swift; sourceTree = "<group>"; };
 		6BE046982A5B0D1390DF2F0D /* UNNotificationScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UNNotificationScheduler.swift; sourceTree = "<group>"; };
+		70FA343353A5715CCC570AB5 /* AnalyticsEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsEvent.swift; sourceTree = "<group>"; };
 		7597B2113F635E32AE67EB48 /* FollowUpBucketingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowUpBucketingTests.swift; sourceTree = "<group>"; };
 		7FA6C266608F9682F95F4BD9 /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
+		8090815216F168BD18735813 /* ExperimentProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperimentProviding.swift; sourceTree = "<group>"; };
+		86AD727441AEBACAFC211DB8 /* SwiftDataExperimentProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataExperimentProviderTests.swift; sourceTree = "<group>"; };
 		8C54E98BC675010747A0A3AF /* NoOpNotificationScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoOpNotificationScheduler.swift; sourceTree = "<group>"; };
 		8ED6E5F16E3E04F651715ECE /* SwiftDataContactRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataContactRepositoryTests.swift; sourceTree = "<group>"; };
 		8F9563C38D4E5EDCF86D9B8A /* NotificationRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationRouter.swift; sourceTree = "<group>"; };
 		923C69C1D052836C88B9E2A1 /* NextStepTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = NextStepTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		93D4E1E0F0F6F9676A4ED361 /* FollowUpSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowUpSummaryView.swift; sourceTree = "<group>"; };
 		97FD68458311629F0591ECD5 /* FollowUpRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowUpRepositoryTests.swift; sourceTree = "<group>"; };
+		99F86C62A7243C1727ABD9BD /* SwiftDataExperimentProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataExperimentProvider.swift; sourceTree = "<group>"; };
 		9C3E41B66E43AE07FD8DCE03 /* InteractionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionViewModel.swift; sourceTree = "<group>"; };
 		9CDFDF26E9EB07448BCD4229 /* SampleDataSeeder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleDataSeeder.swift; sourceTree = "<group>"; };
 		A011F982D1B9C6A1CA7AC48C /* InteractionTimeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionTimeline.swift; sourceTree = "<group>"; };
@@ -100,11 +123,14 @@
 		ABC122CF6680D3C12B39D611 /* TodayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewModel.swift; sourceTree = "<group>"; };
 		ADD7D22D079B44F19203DA8A /* Interaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interaction.swift; sourceTree = "<group>"; };
 		B2F916C0DC6EA02CF5C8015B /* NextStepUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = NextStepUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B4794FB83C2EA85A65670BFE /* FollowUpInsightsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowUpInsightsTests.swift; sourceTree = "<group>"; };
 		BF02820DE198AB2F8EADE488 /* FollowUpFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowUpFormView.swift; sourceTree = "<group>"; };
 		BF802D3104D4074B91B74891 /* ContactListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactListView.swift; sourceTree = "<group>"; };
 		C2258756FFABC7184E9D02BE /* InteractionRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionRepositoryTests.swift; sourceTree = "<group>"; };
 		C8C4AB29D83A1F3EF0A736B8 /* NotificationScheduling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationScheduling.swift; sourceTree = "<group>"; };
+		CBFDA27C0C49FF87C55A37C5 /* ExperimentAssignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperimentAssignment.swift; sourceTree = "<group>"; };
 		DEC8FC4B96255EACDED0536A /* NetworkingContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingContact.swift; sourceTree = "<group>"; };
+		E2F760F1EA4A0FE88AEA697E /* FollowUpInsights.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowUpInsights.swift; sourceTree = "<group>"; };
 		E3D2B37E9AEBC952935B31B7 /* NoOpNotificationSchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoOpNotificationSchedulerTests.swift; sourceTree = "<group>"; };
 		F6128BDC412D49DC41A687A0 /* ContactRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactRepository.swift; sourceTree = "<group>"; };
 		F8CA1BD2D9C5671FA013F3A6 /* FollowUpBucketing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowUpBucketing.swift; sourceTree = "<group>"; };
@@ -122,14 +148,43 @@
 			path = Interactions;
 			sourceTree = "<group>";
 		};
+		10C952AFEFF2FB98DBDD0389 /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				5C200C43C74ECD88E3B5F74F /* DeveloperAnalyticsView.swift */,
+				E2F760F1EA4A0FE88AEA697E /* FollowUpInsights.swift */,
+				93D4E1E0F0F6F9676A4ED361 /* FollowUpSummaryView.swift */,
+			);
+			path = Dashboard;
+			sourceTree = "<group>";
+		};
 		19B62E124C8BFDB1CFA073DD /* Features */ = {
 			isa = PBXGroup;
 			children = (
 				D42992005337233CFCFF84F0 /* Contacts */,
+				10C952AFEFF2FB98DBDD0389 /* Dashboard */,
 				E7A5EEC3F7DD5DED6688DAA9 /* FollowUps */,
 				0FB5A0FD8BA195AB82621744 /* Interactions */,
 			);
 			path = Features;
+			sourceTree = "<group>";
+		};
+		307AE56C78F4EEDD43516BFA /* Experiments */ = {
+			isa = PBXGroup;
+			children = (
+				8090815216F168BD18735813 /* ExperimentProviding.swift */,
+				99F86C62A7243C1727ABD9BD /* SwiftDataExperimentProvider.swift */,
+			);
+			path = Experiments;
+			sourceTree = "<group>";
+		};
+		35DBBC83EE2A8A218B9AF6DC /* Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				47C8EDF7CCBA0C8415F11B83 /* AnalyticsTracking.swift */,
+				1804742B6B3666F205288CDD /* SwiftDataAnalyticsTracker.swift */,
+			);
+			path = Analytics;
 			sourceTree = "<group>";
 		};
 		605DD4FCB57C70EBBD3F63B4 /* NextStepTests */ = {
@@ -137,11 +192,14 @@
 			children = (
 				26DACD2609E2815D3F3D6FED /* ContactFilteringTests.swift */,
 				7597B2113F635E32AE67EB48 /* FollowUpBucketingTests.swift */,
+				B4794FB83C2EA85A65670BFE /* FollowUpInsightsTests.swift */,
 				97FD68458311629F0591ECD5 /* FollowUpRepositoryTests.swift */,
 				C2258756FFABC7184E9D02BE /* InteractionRepositoryTests.swift */,
 				17FC0974368EE8177BD01CE6 /* InteractionTimelineOrderingTests.swift */,
 				E3D2B37E9AEBC952935B31B7 /* NoOpNotificationSchedulerTests.swift */,
+				4CDB9EE3C6756CBF3A9B532E /* SwiftDataAnalyticsTrackerTests.swift */,
 				8ED6E5F16E3E04F651715ECE /* SwiftDataContactRepositoryTests.swift */,
+				86AD727441AEBACAFC211DB8 /* SwiftDataExperimentProviderTests.swift */,
 			);
 			path = NextStepTests;
 			sourceTree = "<group>";
@@ -159,7 +217,9 @@
 		721980171F4EB537A16354B8 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				70FA343353A5715CCC570AB5 /* AnalyticsEvent.swift */,
 				A7FF808359D8FDC6088E919A /* Company.swift */,
+				CBFDA27C0C49FF87C55A37C5 /* ExperimentAssignment.swift */,
 				470436C96622B3A24E400854 /* FollowUp.swift */,
 				ADD7D22D079B44F19203DA8A /* Interaction.swift */,
 				DEC8FC4B96255EACDED0536A /* NetworkingContact.swift */,
@@ -202,6 +262,8 @@
 		A6510616889C99ED794A2847 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				35DBBC83EE2A8A218B9AF6DC /* Analytics */,
+				307AE56C78F4EEDD43516BFA /* Experiments */,
 				721980171F4EB537A16354B8 /* Models */,
 				88979355BBA543CB5A1640A3 /* Notifications */,
 				FFAFFBC6ACB84C617A8F2B80 /* Persistence */,
@@ -223,6 +285,7 @@
 			isa = PBXGroup;
 			children = (
 				2A0405A783C48FAA4C7DD4AA /* ContactManagementFlowUITests.swift */,
+				1A85312A730BF79B8B35024A /* ExperimentsAnalyticsFlowUITests.swift */,
 				25954DF22BBEF68BAB6EFA78 /* FollowUpManagementFlowUITests.swift */,
 				AA1C58AFB68824C0EB600EC0 /* InteractionManagementFlowUITests.swift */,
 			);
@@ -360,6 +423,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DABA3CD1EEC6B675548C673E /* ContactManagementFlowUITests.swift in Sources */,
+				B472B3FDE93BE5AF89CD2370 /* ExperimentsAnalyticsFlowUITests.swift in Sources */,
 				DAEC1E364342EF355409FE47 /* FollowUpManagementFlowUITests.swift in Sources */,
 				7EE92815B5B25A9FB0911978 /* InteractionManagementFlowUITests.swift in Sources */,
 			);
@@ -371,11 +435,14 @@
 			files = (
 				A376AC6741E52E65EFB56CC3 /* ContactFilteringTests.swift in Sources */,
 				A6AF8537D0283043B43B2B30 /* FollowUpBucketingTests.swift in Sources */,
+				85D39F9B833954DBFD5CFCDD /* FollowUpInsightsTests.swift in Sources */,
 				E696125A8493AC83D05F9532 /* FollowUpRepositoryTests.swift in Sources */,
 				4E44EC7CCC011F97BBC5674E /* InteractionRepositoryTests.swift in Sources */,
 				481A14E5EB80970314E2843D /* InteractionTimelineOrderingTests.swift in Sources */,
 				DE052091D07A2C28C73B6D40 /* NoOpNotificationSchedulerTests.swift in Sources */,
+				6258622A60D3EC8D5AAAE370 /* SwiftDataAnalyticsTrackerTests.swift in Sources */,
 				177A4F708D9E5D473C5369D7 /* SwiftDataContactRepositoryTests.swift in Sources */,
+				3A19EBFCE70D1F61523CBD76 /* SwiftDataExperimentProviderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -383,6 +450,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				357E960CFA2BDBA9B8BD7804 /* AnalyticsEvent.swift in Sources */,
+				461F10B932AF51A2569EA4AB /* AnalyticsTracking.swift in Sources */,
 				6A95A8882B512264C5054EF9 /* Company.swift in Sources */,
 				6CA99053A2AA14157313C7A0 /* ContactDetailView.swift in Sources */,
 				4B69099E0239BC0003AABB9F /* ContactFiltering.swift in Sources */,
@@ -390,10 +459,15 @@
 				8F470475C0EADD0CBAA3E130 /* ContactListView.swift in Sources */,
 				6CCF528F4AA2F93B3957601F /* ContactRepository.swift in Sources */,
 				748D499B9B4B62D60A5987B4 /* ContactViewModel.swift in Sources */,
+				E10A8C9AE74E636648B0A813 /* DeveloperAnalyticsView.swift in Sources */,
+				F0855313BC62302662E06A4E /* ExperimentAssignment.swift in Sources */,
+				66FD3DB8D47F75635E885865 /* ExperimentProviding.swift in Sources */,
 				F612CBF1FE73AEEBFC5C2DB4 /* FollowUp.swift in Sources */,
 				582BD0C55F1214FA0F1EC91E /* FollowUpBucketing.swift in Sources */,
 				BBA3383941C4A3785E0033D5 /* FollowUpFormView.swift in Sources */,
+				302CD33E62FCF3E2791D6F73 /* FollowUpInsights.swift in Sources */,
 				1075CF2400594EFE7275C110 /* FollowUpRow.swift in Sources */,
+				99E572E7A254EE645307E2C0 /* FollowUpSummaryView.swift in Sources */,
 				585DF1D12D9E47EECBEF56B7 /* FollowUpViewModel.swift in Sources */,
 				1BE7E4F6AE4C82020418E373 /* Interaction.swift in Sources */,
 				3AE057702D5389B6964F4A43 /* InteractionFormView.swift in Sources */,
@@ -408,7 +482,9 @@
 				3DA07D41F84EB65024AF6811 /* NotificationScheduling.swift in Sources */,
 				6CC2521ECACED15DE871687C /* RootTabView.swift in Sources */,
 				F0F2DDBF6FF54F3E1836B2D1 /* SampleDataSeeder.swift in Sources */,
+				D11677FB00F56447482552BE /* SwiftDataAnalyticsTracker.swift in Sources */,
 				7DC99B7B614DFD8C6CE71CFB /* SwiftDataContactRepository.swift in Sources */,
+				85D083C33B80985B90A0AC4F /* SwiftDataExperimentProvider.swift in Sources */,
 				A92209D25371D50DFF34595D /* TodayView.swift in Sources */,
 				03C5EDC0DABA40AA3184B5EE /* TodayViewModel.swift in Sources */,
 				01C3E19B57189892D11F644C /* UNNotificationScheduler.swift in Sources */,

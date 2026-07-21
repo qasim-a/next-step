@@ -27,11 +27,13 @@ struct ContactDetailView: View {
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.contactRepository) private var contactRepository
+    @Environment(\.analyticsTracking) private var analyticsTracking
     @State private var activeSheet: ActiveSheet?
     @State private var isPresentingDeleteConfirmation = false
     @State private var interactionViewModel: InteractionViewModel?
     @State private var interactionPendingDeletion: Interaction?
     @State private var followUpViewModel: FollowUpViewModel?
+    @State private var hasTrackedOpen = false
 
     var body: some View {
         List {
@@ -196,6 +198,15 @@ struct ContactDetailView: View {
             if followUpViewModel == nil, let contactRepository {
                 followUpViewModel = FollowUpViewModel(repository: contactRepository, contact: contact)
             }
+        }
+        .onAppear {
+            // Guarded because SwiftUI re-invokes onAppear when a sheet presented from this view
+            // is dismissed (editing, logging an interaction, creating a follow-up) — without this,
+            // one visit would record several contactOpened events. See
+            // specs/004-experiments-analytics/research.md.
+            guard !hasTrackedOpen else { return }
+            hasTrackedOpen = true
+            analyticsTracking?.track(.contactOpened, contact: contact)
         }
         .confirmationDialog(
             "Delete \(contact.name)?",

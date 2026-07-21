@@ -3,7 +3,16 @@ import UserNotifications
 
 @MainActor
 final class UNNotificationScheduler: NotificationScheduling {
+    /// Registered with `.customDismissAction` at launch (see NextStepApp) — required for
+    /// UNNotificationDismissActionIdentifier to ever reach the delegate.
+    static let reminderCategoryIdentifier = "followUpReminder"
+
     private let center = UNUserNotificationCenter.current()
+    private let experimentProviding: ExperimentProviding
+
+    init(experimentProviding: ExperimentProviding) {
+        self.experimentProviding = experimentProviding
+    }
 
     func requestAuthorizationIfNeeded() async -> Bool {
         let settings = await center.notificationSettings()
@@ -32,14 +41,19 @@ final class UNNotificationScheduler: NotificationScheduling {
             return
         }
 
+        let name = followUp.contact?.name ?? "a contact"
         let content = UNMutableNotificationContent()
-        content.title = "Follow up with \(followUp.contact?.name ?? "a contact")"
+        content.title = switch experimentProviding.reminderCopyVariant {
+        case .control: "Follow up with \(name)"
+        case .variant: "Don't lose touch with \(name)"
+        }
         content.body = followUp.suggestedAction?.isEmpty == false
             ? followUp.suggestedAction!
             : "This follow-up is due today."
         content.sound = .default
+        content.categoryIdentifier = Self.reminderCategoryIdentifier
         if let contactID = followUp.contact?.id {
-            content.userInfo = ["contactID": contactID.uuidString]
+            content.userInfo = ["contactID": contactID.uuidString, "contactName": name]
         }
 
         let triggerDate = Calendar.current.dateComponents(

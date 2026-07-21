@@ -6,6 +6,7 @@ struct ContactListView: View {
     @State private var isPresentingContactForm = false
     @State private var searchText = ""
     @State private var selectedCategory: RelationshipCategory?
+    @State private var isShowingDeveloperAnalytics = false
     @Binding var navigationPath: NavigationPath
 
     init(navigationPath: Binding<NavigationPath> = .constant(NavigationPath())) {
@@ -35,11 +36,23 @@ struct ContactListView: View {
                 ToolbarItem(placement: .secondaryAction) {
                     categoryFilterMenu
                 }
+                ToolbarItem(placement: .secondaryAction) {
+                    Button {
+                        isShowingDeveloperAnalytics = true
+                    } label: {
+                        Label("Developer Info", systemImage: "wrench.and.screwdriver")
+                    }
+                    .accessibilityIdentifier("contactList.developerInfoButton")
+                    .accessibilityHint("Shows tracked analytics events and the current experiment variant")
+                }
             }
             .sheet(isPresented: $isPresentingContactForm) {
                 if let viewModel {
                     ContactFormView(viewModel: viewModel)
                 }
+            }
+            .sheet(isPresented: $isShowingDeveloperAnalytics) {
+                DeveloperAnalyticsView()
             }
             .navigationDestination(for: NetworkingContact.self) { contact in
                 if let viewModel {

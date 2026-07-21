@@ -11,17 +11,21 @@ struct FollowUpRepositoryTests {
     private let container: ModelContainer
     private let repository: SwiftDataContactRepository
     private let scheduler: NoOpNotificationScheduler
+    private let analyticsTracker: SwiftDataAnalyticsTracker
 
     init() throws {
         let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
         container = try ModelContainer(
             for: NetworkingContact.self, Company.self, Interaction.self, FollowUp.self,
+            AnalyticsEvent.self,
             configurations: configuration
         )
         scheduler = NoOpNotificationScheduler()
+        analyticsTracker = SwiftDataAnalyticsTracker(modelContext: container.mainContext)
         repository = SwiftDataContactRepository(
             modelContext: container.mainContext,
-            notificationScheduling: scheduler
+            notificationScheduling: scheduler,
+            analyticsTracking: analyticsTracker
         )
     }
 
@@ -77,6 +81,11 @@ struct FollowUpRepositoryTests {
         // initial create and the reschedule each contribute one entry to both lists.
         #expect(scheduler.scheduledFollowUpIDs == [followUp.id, followUp.id])
         #expect(scheduler.canceledFollowUpIDs == [followUp.id, followUp.id])
+
+        // Unlike notification scheduling, followUpRescheduled tracks only the second call
+        // (the create itself is not a reschedule).
+        let events = try analyticsTracker.fetchRecentEvents()
+        #expect(events.filter { $0.type == .followUpRescheduled }.count == 1)
     }
 
     @Test
@@ -90,6 +99,9 @@ struct FollowUpRepositoryTests {
         #expect(followUp.isCompleted)
         #expect(followUp.completedAt != nil)
         #expect(scheduler.canceledFollowUpIDs.contains(followUp.id))
+
+        let events = try analyticsTracker.fetchRecentEvents()
+        #expect(events.contains { $0.type == .followUpCompleted && $0.followUpID == followUp.id })
     }
 
     @Test

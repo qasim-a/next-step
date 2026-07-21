@@ -5,10 +5,16 @@ import SwiftData
 final class SwiftDataContactRepository: ContactRepository {
     private let modelContext: ModelContext
     private let notificationScheduling: NotificationScheduling
+    private let analyticsTracking: AnalyticsTracking
 
-    init(modelContext: ModelContext, notificationScheduling: NotificationScheduling) {
+    init(
+        modelContext: ModelContext,
+        notificationScheduling: NotificationScheduling,
+        analyticsTracking: AnalyticsTracking
+    ) {
         self.modelContext = modelContext
         self.notificationScheduling = notificationScheduling
+        self.analyticsTracking = analyticsTracking
     }
 
     func fetchAll() throws -> [NetworkingContact] {
@@ -112,11 +118,20 @@ final class SwiftDataContactRepository: ContactRepository {
     }
 
     func saveFollowUp(_ followUp: FollowUp, for contact: NetworkingContact) async throws {
+        // Checked before insert: modelContext is nil only for a follow-up that has never been
+        // persisted. This app's only path to calling saveFollowUp on an already-persisted
+        // follow-up is the edit/reschedule form (see TodayViewModel.rescheduleFollowUp), so this
+        // doubles as the create-vs-reschedule signal for analytics — see research.md.
+        let isReschedule = followUp.modelContext != nil
         if followUp.modelContext == nil {
             followUp.contact = contact
             modelContext.insert(followUp)
         }
         try modelContext.save()
+
+        if isReschedule {
+            analyticsTracking.track(.followUpRescheduled, followUp: followUp)
+        }
 
         // Cancel-then-reschedule covers both brand-new follow-ups and due-date changes on
         // existing ones uniformly; cancelReminder is always safe to call even when nothing was
@@ -131,6 +146,7 @@ final class SwiftDataContactRepository: ContactRepository {
         followUp.isCompleted = true
         followUp.completedAt = .now
         try modelContext.save()
+        analyticsTracking.track(.followUpCompleted, followUp: followUp)
         await notificationScheduling.cancelReminder(for: followUp)
     }
 
