@@ -49,6 +49,7 @@
 		B472B3FDE93BE5AF89CD2370 /* ExperimentsAnalyticsFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A85312A730BF79B8B35024A /* ExperimentsAnalyticsFlowUITests.swift */; };
 		BBA3383941C4A3785E0033D5 /* FollowUpFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF02820DE198AB2F8EADE488 /* FollowUpFormView.swift */; };
 		D11677FB00F56447482552BE /* SwiftDataAnalyticsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1804742B6B3666F205288CDD /* SwiftDataAnalyticsTracker.swift */; };
+		D8DDC86E558F52BFB854B9C0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2A7989488EEC48AF1CC7D8A6 /* Assets.xcassets */; };
 		DABA3CD1EEC6B675548C673E /* ContactManagementFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0405A783C48FAA4C7DD4AA /* ContactManagementFlowUITests.swift */; };
 		DAEC1E364342EF355409FE47 /* FollowUpManagementFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25954DF22BBEF68BAB6EFA78 /* FollowUpManagementFlowUITests.swift */; };
 		DBCA1F4D939624A40E8CEA18 /* InteractionTimeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = A011F982D1B9C6A1CA7AC48C /* InteractionTimeline.swift */; };
@@ -81,6 +82,7 @@
 /* Begin PBXFileReference section */
 		00813B3F2FBAFD54336D475D /* FollowUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowUpViewModel.swift; sourceTree = "<group>"; };
 		061B9D786DD8B1AAE701D6F1 /* NextStep.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = NextStep.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0636598E664337BEEC9AF4BD /* Generated-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Generated-Info.plist"; sourceTree = "<group>"; };
 		099DA5E39BCEE865D4858022 /* InteractionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionRow.swift; sourceTree = "<group>"; };
 		0C3C7CE31501FD9230803D70 /* FollowUpRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowUpRow.swift; sourceTree = "<group>"; };
 		10779AC8F64A4D9BC1E697F8 /* InteractionFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionFormView.swift; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 		26DACD2609E2815D3F3D6FED /* ContactFilteringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactFilteringTests.swift; sourceTree = "<group>"; };
 		2A0405A783C48FAA4C7DD4AA /* ContactManagementFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactManagementFlowUITests.swift; sourceTree = "<group>"; };
 		2A0CEBB04423246BD88A3BD7 /* ContactDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailView.swift; sourceTree = "<group>"; };
+		2A7989488EEC48AF1CC7D8A6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3B021449D063545802AB0D53 /* ContactFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactFormView.swift; sourceTree = "<group>"; };
 		4281202B4E38ACE89D93E617 /* SwiftDataContactRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataContactRepository.swift; sourceTree = "<group>"; };
 		470436C96622B3A24E400854 /* FollowUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowUp.swift; sourceTree = "<group>"; };
@@ -252,6 +255,8 @@
 		A5CC17FF6BF0A6301F339663 /* NextStep */ = {
 			isa = PBXGroup;
 			children = (
+				2A7989488EEC48AF1CC7D8A6 /* Assets.xcassets */,
+				0636598E664337BEEC9AF4BD /* Generated-Info.plist */,
 				8320181103BA4EC1F601A22D /* App */,
 				A6510616889C99ED794A2847 /* Core */,
 				19B62E124C8BFDB1CFA073DD /* Features */,
@@ -352,6 +357,7 @@
 			buildConfigurationList = B9EB61111B1B8B8CB06CEC85 /* Build configuration list for PBXNativeTarget "NextStep" */;
 			buildPhases = (
 				DA030E98F0AA1BD803898284 /* Sources */,
+				2CA5E919C071C5F37E88176A /* Resources */,
 			);
 			buildRules = (
 			);
@@ -416,6 +422,17 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2CA5E919C071C5F37E88176A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D8DDC86E558F52BFB854B9C0 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		0C8830127802E930041ACB3B /* Sources */ = {
@@ -532,8 +549,8 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "NextStep/Generated-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -709,8 +726,8 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "NextStep/Generated-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
