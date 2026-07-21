@@ -96,6 +96,24 @@ delete/cascade-delete, lastInteractionDate recompute) and `InteractionTimelineOr
 `InteractionManagementFlowUITests` (log/view timeline/edit/delete, cascade delete). 15/15 unit
 tests, 16/16 UI tests, all passing.
 
+**Polish (completed retroactively)**: this spec's Polish phase (T020-T022) was originally skipped
+and only closed out later, after Specification 3 shipped. Accessibility hints were added to match
+the pattern already used elsewhere in the app: `contactDetail.deleteInteractionButton` now has
+"Requires confirmation" (matching `contactDetail.deleteButton` and `today.deleteFollowUpButton`),
+and `contactDetail.logInteractionButton` now has a descriptive hint (matching
+`contactDetail.createFollowUpButton`). `InteractionFormView`'s fields already had identifiers and
+implicit VoiceOver labels from their SwiftUI title parameters, at parity with `FollowUpFormView`.
+`specs/002-interactions/quickstart.md`'s manual validation scenarios were cross-checked against
+the existing automated test suite rather than walked by hand — no simulator tap-automation tool is
+available in this environment (no `idb`, and `simctl` has no touch-injection command), so "manual
+validation" here means: confirm each scenario has direct automated coverage, and explicitly flag
+the one that doesn't. That gap is real: the relaunch-persistence test only covers a bare contact,
+not one with interactions attached, so persistence of interaction data across a force-quit has
+still not been verified by a human. Full regression suite re-run after these changes: 47/47 unit
+tests, 38/38 UI tests passing (one UI test failed on the first run with the simulator's
+"Lost connection to the application" error — this project's known environmental flakiness,
+confirmed by re-running that single test in isolation, where it passed).
+
 ### Specification 3: Follow-ups and Notifications
 
 **AI-assisted**: All artifacts — spec, plan, research, data model, task breakdown, and every

@@ -74,6 +74,7 @@ struct ContactDetailView: View {
                 Button("Log Interaction") {
                     activeSheet = .logInteraction
                 }
+                .accessibilityHint("Adds a new interaction to this contact's timeline")
                 .accessibilityIdentifier("contactDetail.logInteractionButton")
 
                 Button("Create Follow-Up") {
@@ -101,6 +102,7 @@ struct ContactDetailView: View {
                                     interactionPendingDeletion = interaction
                                 }
                                 .accessibilityIdentifier("contactDetail.deleteInteractionButton")
+                                .accessibilityHint("Requires confirmation")
                             }
                             .swipeActions(edge: .leading) {
                                 Button("Follow Up") {

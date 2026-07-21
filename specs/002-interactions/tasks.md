@@ -122,9 +122,9 @@ last interaction is removed); delete a contact and confirm its interactions are 
 
 **Purpose**: Improvements that span all three user stories.
 
-- [ ] T020 Add accessibility labels/hints to the new interaction controls (`InteractionFormView`, `InteractionRow`, the timeline's log/edit/delete actions)
-- [ ] T021 Walk through every scenario in [quickstart.md](./quickstart.md) manually on a simulator (including the Specification 1 regression scenarios) and fix any discrepancies found
-- [ ] T022 [P] Add the Specification 2 entry to `AI_USAGE.md` per the constitution's Development Workflow
+- [x] T020 Add accessibility labels/hints to the new interaction controls (`InteractionFormView`, `InteractionRow`, the timeline's log/edit/delete actions)
+- [x] T021 Walk through every scenario in [quickstart.md](./quickstart.md) manually on a simulator (including the Specification 1 regression scenarios) and fix any discrepancies found
+- [x] T022 [P] Add the Specification 2 entry to `AI_USAGE.md` per the constitution's Development Workflow
 
 ---
 
