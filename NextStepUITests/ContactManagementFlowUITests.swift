@@ -8,6 +8,9 @@ final class ContactManagementFlowUITests: XCTestCase {
         app = XCUIApplication()
         app.launchArguments += ["-UITestResetState"]
         app.launch()
+        // The app now launches to the Today tab (Specification 3); these tests exercise the
+        // Contacts tab, so switch to it once up front.
+        app.tabBars.buttons["Contacts"].tap()
     }
 
     // MARK: - User Story 1: Capture a new contact
@@ -259,6 +262,7 @@ final class ContactManagementFlowUITests: XCTestCase {
         app.terminate()
         app = XCUIApplication()
         app.launch()
+        app.tabBars.buttons["Contacts"].tap()
 
         let contactName = "Relaunch Persistence Test Contact"
 
@@ -280,6 +284,7 @@ final class ContactManagementFlowUITests: XCTestCase {
 
         app.terminate()
         app.launch()
+        app.tabBars.buttons["Contacts"].tap()
 
         XCTAssertTrue(app.staticTexts[contactName].waitForExistence(timeout: 2))
 

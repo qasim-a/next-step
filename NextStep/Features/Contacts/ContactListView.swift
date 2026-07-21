@@ -6,9 +6,14 @@ struct ContactListView: View {
     @State private var isPresentingContactForm = false
     @State private var searchText = ""
     @State private var selectedCategory: RelationshipCategory?
+    @Binding var navigationPath: NavigationPath
+
+    init(navigationPath: Binding<NavigationPath> = .constant(NavigationPath())) {
+        _navigationPath = navigationPath
+    }
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navigationPath) {
             Group {
                 if let viewModel {
                     content(for: viewModel)

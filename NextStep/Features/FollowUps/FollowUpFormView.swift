@@ -1,21 +1,30 @@
 import SwiftUI
 
+/// Closure-based rather than tied to a specific view model: creating a follow-up happens from
+/// `ContactDetailView` (via `FollowUpViewModel`), while editing/rescheduling happens from
+/// `TodayView` (via `TodayViewModel`) — this lets both reuse the same form.
 struct FollowUpFormView: View {
     @Environment(\.dismiss) private var dismiss
 
-    var viewModel: FollowUpViewModel
-    var originatingInteraction: Interaction?
+    var existingFollowUp: FollowUp?
+    var onSave: (_ dueDate: Date, _ priority: FollowUpPriority, _ suggestedAction: String) async -> Bool
 
     @State private var dueDate: Date
     @State private var priority: FollowUpPriority
     @State private var suggestedAction: String
 
-    init(viewModel: FollowUpViewModel, originatingInteraction: Interaction? = nil) {
-        self.viewModel = viewModel
-        self.originatingInteraction = originatingInteraction
-        _dueDate = State(initialValue: .now)
-        _priority = State(initialValue: .medium)
-        _suggestedAction = State(initialValue: originatingInteraction?.nextAction ?? "")
+    init(
+        existingFollowUp: FollowUp? = nil,
+        originatingInteraction: Interaction? = nil,
+        onSave: @escaping (Date, FollowUpPriority, String) async -> Bool
+    ) {
+        self.existingFollowUp = existingFollowUp
+        self.onSave = onSave
+        _dueDate = State(initialValue: existingFollowUp?.dueDate ?? .now)
+        _priority = State(initialValue: existingFollowUp?.priority ?? .medium)
+        _suggestedAction = State(
+            initialValue: existingFollowUp?.suggestedAction ?? originatingInteraction?.nextAction ?? ""
+        )
     }
 
     var body: some View {
@@ -39,7 +48,7 @@ struct FollowUpFormView: View {
                         .accessibilityLabel("Suggested Action")
                 }
             }
-            .navigationTitle("Create Follow-Up")
+            .navigationTitle(existingFollowUp == nil ? "Create Follow-Up" : "Edit Follow-Up")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -56,12 +65,7 @@ struct FollowUpFormView: View {
 
     private func save() {
         Task {
-            let didSave = await viewModel.createFollowUp(
-                dueDate: dueDate,
-                priority: priority,
-                suggestedAction: suggestedAction,
-                originatingInteraction: originatingInteraction
-            )
+            let didSave = await onSave(dueDate, priority, suggestedAction)
             if didSave {
                 dismiss()
             }

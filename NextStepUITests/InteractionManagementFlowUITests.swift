@@ -8,6 +8,9 @@ final class InteractionManagementFlowUITests: XCTestCase {
         app = XCUIApplication()
         app.launchArguments += ["-UITestResetState"]
         app.launch()
+        // The app now launches to the Today tab (Specification 3); these tests exercise the
+        // Contacts tab, so switch to it once up front.
+        app.tabBars.buttons["Contacts"].tap()
     }
 
     private func createContactAndOpenDetail(name: String) {

@@ -63,4 +63,60 @@ struct FollowUpRepositoryTests {
         let all = try repository.fetchAllFollowUps()
         #expect(all.count == 2)
     }
+
+    @Test
+    func reschedulingAFollowUpCancelsThenReschedulesTheReminder() async throws {
+        let contact = try makeContact()
+        let followUp = FollowUp(dueDate: .now)
+        try await repository.saveFollowUp(followUp, for: contact)
+
+        followUp.dueDate = Calendar.current.date(byAdding: .day, value: 5, to: .now)!
+        try await repository.saveFollowUp(followUp, for: contact)
+
+        // saveFollowUp cancels-then-schedules on every call (not just reschedules), so both the
+        // initial create and the reschedule each contribute one entry to both lists.
+        #expect(scheduler.scheduledFollowUpIDs == [followUp.id, followUp.id])
+        #expect(scheduler.canceledFollowUpIDs == [followUp.id, followUp.id])
+    }
+
+    @Test
+    func completingAFollowUpMarksItCompleteAndCancelsTheReminder() async throws {
+        let contact = try makeContact()
+        let followUp = FollowUp(dueDate: .now)
+        try await repository.saveFollowUp(followUp, for: contact)
+
+        try await repository.completeFollowUp(followUp)
+
+        #expect(followUp.isCompleted)
+        #expect(followUp.completedAt != nil)
+        #expect(scheduler.canceledFollowUpIDs.contains(followUp.id))
+    }
+
+    @Test
+    func deletingAFollowUpRemovesItAndCancelsTheReminder() async throws {
+        let contact = try makeContact()
+        let followUp = FollowUp(dueDate: .now)
+        try await repository.saveFollowUp(followUp, for: contact)
+
+        try await repository.deleteFollowUp(followUp)
+
+        #expect(try repository.fetchFollowUps(for: contact).isEmpty)
+        #expect(scheduler.canceledFollowUpIDs.contains(followUp.id))
+    }
+
+    @Test
+    func deletingAContactCascadesToDeleteItsFollowUpsAndCancelsTheirReminders() async throws {
+        let contact = try makeContact()
+        let followUp = FollowUp(dueDate: .now)
+        try await repository.saveFollowUp(followUp, for: contact)
+
+        try repository.delete(contact)
+        // The cancellation is fired via a non-blocking Task inside delete(_:) (see
+        // SwiftDataContactRepository) so tests must let the run loop turn before observing it.
+        try await Task.sleep(nanoseconds: 50_000_000)
+
+        let allFollowUps = try container.mainContext.fetch(FetchDescriptor<FollowUp>())
+        #expect(allFollowUps.isEmpty)
+        #expect(scheduler.canceledFollowUpIDs.contains(followUp.id))
+    }
 }

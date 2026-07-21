@@ -80,6 +80,7 @@ struct ContactDetailView: View {
                     activeSheet = .createFollowUp
                 }
                 .accessibilityIdentifier("contactDetail.createFollowUpButton")
+                .accessibilityHint("Schedules a reminder to follow up with this contact")
             }
 
             Section("Timeline") {
@@ -107,6 +108,7 @@ struct ContactDetailView: View {
                                 }
                                 .tint(.blue)
                                 .accessibilityIdentifier("contactDetail.createFollowUpFromInteractionButton")
+                                .accessibilityHint("Creates a follow-up pre-filled from this interaction's next action")
                             }
                     }
                 }
@@ -145,11 +147,20 @@ struct ContactDetailView: View {
                 }
             case .createFollowUp:
                 if let followUpViewModel {
-                    FollowUpFormView(viewModel: followUpViewModel)
+                    FollowUpFormView { dueDate, priority, suggestedAction in
+                        await followUpViewModel.createFollowUp(
+                            dueDate: dueDate, priority: priority, suggestedAction: suggestedAction
+                        )
+                    }
                 }
             case .createFollowUpFromInteraction(let interaction):
                 if let followUpViewModel {
-                    FollowUpFormView(viewModel: followUpViewModel, originatingInteraction: interaction)
+                    FollowUpFormView(originatingInteraction: interaction) { dueDate, priority, suggestedAction in
+                        await followUpViewModel.createFollowUp(
+                            dueDate: dueDate, priority: priority, suggestedAction: suggestedAction,
+                            originatingInteraction: interaction
+                        )
+                    }
                 }
             }
         }

@@ -1,11 +1,14 @@
 import SwiftUI
 import SwiftData
+import UserNotifications
 
 @main
 struct NextStepApp: App {
     private let modelContainer: ModelContainer
     private let contactRepository: ContactRepository
     private let notificationScheduling: NotificationScheduling
+    private let notificationRouter = NotificationRouter()
+    private let notificationDelegate: NotificationDelegate
 
     init() {
         do {
@@ -38,6 +41,9 @@ struct NextStepApp: App {
             modelContext: modelContainer.mainContext,
             notificationScheduling: notificationScheduling
         )
+
+        notificationDelegate = NotificationDelegate(router: notificationRouter)
+        UNUserNotificationCenter.current().delegate = notificationDelegate
     }
 
     private static var isRunningUnderTest: Bool {
@@ -47,10 +53,11 @@ struct NextStepApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContactListView()
+            RootTabView()
         }
         .modelContainer(modelContainer)
         .environment(\.contactRepository, contactRepository)
         .environment(\.notificationScheduling, notificationScheduling)
+        .environment(\.notificationRouter, notificationRouter)
     }
 }
