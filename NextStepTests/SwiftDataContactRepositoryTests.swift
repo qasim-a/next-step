@@ -14,10 +14,13 @@ struct SwiftDataContactRepositoryTests {
     init() throws {
         let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
         container = try ModelContainer(
-            for: NetworkingContact.self, Company.self,
+            for: NetworkingContact.self, Company.self, Interaction.self, FollowUp.self,
             configurations: configuration
         )
-        repository = SwiftDataContactRepository(modelContext: container.mainContext)
+        repository = SwiftDataContactRepository(
+            modelContext: container.mainContext,
+            notificationScheduling: NoOpNotificationScheduler()
+        )
     }
 
     @Test

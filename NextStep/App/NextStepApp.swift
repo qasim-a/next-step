@@ -5,6 +5,7 @@ import SwiftData
 struct NextStepApp: App {
     private let modelContainer: ModelContainer
     private let contactRepository: ContactRepository
+    private let notificationScheduling: NotificationScheduling
 
     init() {
         do {
@@ -14,16 +15,29 @@ struct NextStepApp: App {
                 // store, which would otherwise double-initialize the same model types.
                 let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
                 modelContainer = try ModelContainer(
-                    for: NetworkingContact.self, Company.self,
+                    for: NetworkingContact.self, Company.self, Interaction.self, FollowUp.self,
                     configurations: configuration
                 )
             } else {
-                modelContainer = try ModelContainer(for: NetworkingContact.self, Company.self)
+                modelContainer = try ModelContainer(
+                    for: NetworkingContact.self, Company.self, Interaction.self, FollowUp.self
+                )
             }
         } catch {
             fatalError("Failed to initialize SwiftData ModelContainer: \(error)")
         }
-        contactRepository = SwiftDataContactRepository(modelContext: modelContainer.mainContext)
+
+        // Under automated tests, the real UNUserNotificationCenter permission dialog cannot be
+        // reliably driven by XCUITest, so the app runs against a no-op scheduler instead — see
+        // specs/003-followups-notifications/research.md.
+        notificationScheduling = Self.isRunningUnderTest
+            ? NoOpNotificationScheduler()
+            : UNNotificationScheduler()
+
+        contactRepository = SwiftDataContactRepository(
+            modelContext: modelContainer.mainContext,
+            notificationScheduling: notificationScheduling
+        )
     }
 
     private static var isRunningUnderTest: Bool {
@@ -37,5 +51,6 @@ struct NextStepApp: App {
         }
         .modelContainer(modelContainer)
         .environment(\.contactRepository, contactRepository)
+        .environment(\.notificationScheduling, notificationScheduling)
     }
 }

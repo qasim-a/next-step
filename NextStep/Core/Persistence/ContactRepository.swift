@@ -13,6 +13,12 @@ protocol ContactRepository {
     func fetchInteractions(for contact: NetworkingContact) throws -> [Interaction]
     func saveInteraction(_ interaction: Interaction, for contact: NetworkingContact) throws
     func deleteInteraction(_ interaction: Interaction) throws
+
+    func fetchFollowUps(for contact: NetworkingContact) throws -> [FollowUp]
+    func fetchAllFollowUps() throws -> [FollowUp]
+    func saveFollowUp(_ followUp: FollowUp, for contact: NetworkingContact) async throws
+    func completeFollowUp(_ followUp: FollowUp) async throws
+    func deleteFollowUp(_ followUp: FollowUp) async throws
 }
 
 private struct ContactRepositoryKey: EnvironmentKey {

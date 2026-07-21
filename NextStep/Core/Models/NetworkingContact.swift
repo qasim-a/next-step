@@ -38,6 +38,9 @@ final class NetworkingContact {
     @Relationship(deleteRule: .cascade, inverse: \Interaction.contact)
     var interactions: [Interaction] = []
 
+    @Relationship(deleteRule: .cascade, inverse: \FollowUp.contact)
+    var followUps: [FollowUp] = []
+
     init(
         id: UUID = UUID(),
         name: String,

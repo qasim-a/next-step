@@ -3,9 +3,11 @@ import SwiftData
 
 final class SwiftDataContactRepository: ContactRepository {
     private let modelContext: ModelContext
+    private let notificationScheduling: NotificationScheduling
 
-    init(modelContext: ModelContext) {
+    init(modelContext: ModelContext, notificationScheduling: NotificationScheduling) {
         self.modelContext = modelContext
+        self.notificationScheduling = notificationScheduling
     }
 
     func fetchAll() throws -> [NetworkingContact] {
@@ -28,6 +30,19 @@ final class SwiftDataContactRepository: ContactRepository {
     }
 
     func delete(_ contact: NetworkingContact) throws {
+        // SwiftData's cascade delete rule removes the contact's follow-ups automatically, but it
+        // has no way to know about the separate notification system, so pending reminders for
+        // them are canceled here first. Fire-and-forget: cancellation is not correctness-critical
+        // (the FollowUp row itself is synchronously cascade-deleted regardless), and keeping
+        // delete(_:) synchronous avoids an async ripple through every Specification 1/2 call site.
+        let followUpsToCancel = contact.followUps
+        let scheduler = notificationScheduling
+        Task {
+            for followUp in followUpsToCancel {
+                await scheduler.cancelReminder(for: followUp)
+            }
+        }
+
         modelContext.delete(contact)
         try modelContext.save()
     }
@@ -80,6 +95,47 @@ final class SwiftDataContactRepository: ContactRepository {
     private func recomputeLastInteractionDate(for contact: NetworkingContact) throws {
         let interactions = try fetchInteractions(for: contact)
         contact.lastInteractionDate = interactions.map(\.date).max()
+        try modelContext.save()
+    }
+
+    func fetchFollowUps(for contact: NetworkingContact) throws -> [FollowUp] {
+        let contactID = contact.id
+        let descriptor = FetchDescriptor<FollowUp>(
+            predicate: #Predicate { $0.contact?.id == contactID }
+        )
+        return try modelContext.fetch(descriptor)
+    }
+
+    func fetchAllFollowUps() throws -> [FollowUp] {
+        try modelContext.fetch(FetchDescriptor<FollowUp>())
+    }
+
+    func saveFollowUp(_ followUp: FollowUp, for contact: NetworkingContact) async throws {
+        if followUp.modelContext == nil {
+            followUp.contact = contact
+            modelContext.insert(followUp)
+        }
+        try modelContext.save()
+
+        // Cancel-then-reschedule covers both brand-new follow-ups and due-date changes on
+        // existing ones uniformly; cancelReminder is always safe to call even when nothing was
+        // previously scheduled.
+        await notificationScheduling.cancelReminder(for: followUp)
+        if !followUp.isCompleted {
+            await notificationScheduling.scheduleReminder(for: followUp)
+        }
+    }
+
+    func completeFollowUp(_ followUp: FollowUp) async throws {
+        followUp.isCompleted = true
+        followUp.completedAt = .now
+        try modelContext.save()
+        await notificationScheduling.cancelReminder(for: followUp)
+    }
+
+    func deleteFollowUp(_ followUp: FollowUp) async throws {
+        await notificationScheduling.cancelReminder(for: followUp)
+        modelContext.delete(followUp)
         try modelContext.save()
     }
 }
